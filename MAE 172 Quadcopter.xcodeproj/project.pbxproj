@@ -165,8 +165,7 @@
 				D1FCA7FC1C501A7600CBD7B6 /* Configurations */,
 				D1FCA8471C501A7600CBD7B6 /* Makefiles */,
 				D1FCA8691C501A7700CBD7B6 /* Utilities */,
-				D1FCA8861C501AC200CBD7B6 /* LinearControllers.cpp */,
-				D1FCA8871C501AC200CBD7B6 /* LinearControllers.h */,
+				D1FCA8891C501F3000CBD7B6 /* src */,
 			);
 			path = "MAE 172 Quadcopter";
 			sourceTree = "<group>";
@@ -312,6 +311,15 @@
 				D1FCA8701C501A7700CBD7B6 /* uploader_izmir.sh */,
 			);
 			name = Utilities;
+			sourceTree = "<group>";
+		};
+		D1FCA8891C501F3000CBD7B6 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				D1FCA8861C501AC200CBD7B6 /* LinearControllers.cpp */,
+				D1FCA8871C501AC200CBD7B6 /* LinearControllers.h */,
+			);
+			name = src;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

@@ -77,12 +77,7 @@ private:
     
 };
 
-class FlightController {
-public:
-    //TODO
-private:
-    //TODO
-};
+
 
 
 

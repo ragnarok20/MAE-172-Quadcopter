@@ -10,6 +10,9 @@
   Licence <#licence#>
 
 
+  Currently Set up to compile on a teensy 3.1 using embededXcode.
+  Source Folders will contain hardware independent files
+
 
   References
   ----------------------------------
