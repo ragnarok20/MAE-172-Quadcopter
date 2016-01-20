@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		D1FCA7F61C501A7600CBD7B6 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D1FCA7F51C501A7600CBD7B6 /* main.cpp */; };
 		D1FCA7F81C501A7600CBD7B6 /* Makefile in Sources */ = {isa = PBXBuildFile; fileRef = D1FCA7F71C501A7600CBD7B6 /* Makefile */; };
-		D1FCA8881C501AC200CBD7B6 /* LinearControllers.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D1FCA8861C501AC200CBD7B6 /* LinearControllers.cpp */; };
+		D1FCA88C1C5020B700CBD7B6 /* LinearControllers.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D1FCA88A1C5020B700CBD7B6 /* LinearControllers.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -133,8 +133,8 @@
 		D1FCA86F1C501A7700CBD7B6 /* TemplateIcon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = TemplateIcon.icns; path = Utilities/TemplateIcon.icns; sourceTree = "<group>"; };
 		D1FCA8701C501A7700CBD7B6 /* uploader_izmir.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; name = uploader_izmir.sh; path = Utilities/uploader_izmir.sh; sourceTree = "<group>"; };
 		D1FCA8711C501A7700CBD7B6 /* MAE_172_Quadcopter.ino */ = {isa = PBXFileReference; lastKnownFileType = text; path = MAE_172_Quadcopter.ino; sourceTree = "<group>"; };
-		D1FCA8861C501AC200CBD7B6 /* LinearControllers.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LinearControllers.cpp; sourceTree = "<group>"; };
-		D1FCA8871C501AC200CBD7B6 /* LinearControllers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LinearControllers.h; sourceTree = "<group>"; };
+		D1FCA88A1C5020B700CBD7B6 /* LinearControllers.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = LinearControllers.cpp; path = src/LinearControllers.cpp; sourceTree = "<group>"; };
+		D1FCA88B1C5020B700CBD7B6 /* LinearControllers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LinearControllers.h; path = src/LinearControllers.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -316,8 +316,8 @@
 		D1FCA8891C501F3000CBD7B6 /* src */ = {
 			isa = PBXGroup;
 			children = (
-				D1FCA8861C501AC200CBD7B6 /* LinearControllers.cpp */,
-				D1FCA8871C501AC200CBD7B6 /* LinearControllers.h */,
+				D1FCA88A1C5020B700CBD7B6 /* LinearControllers.cpp */,
+				D1FCA88B1C5020B700CBD7B6 /* LinearControllers.h */,
 			);
 			name = src;
 			sourceTree = "<group>";
@@ -464,7 +464,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D1FCA8881C501AC200CBD7B6 /* LinearControllers.cpp in Sources */,
+				D1FCA88C1C5020B700CBD7B6 /* LinearControllers.cpp in Sources */,
 				D1FCA7F81C501A7600CBD7B6 /* Makefile in Sources */,
 				D1FCA7F61C501A7600CBD7B6 /* main.cpp in Sources */,
 			);
