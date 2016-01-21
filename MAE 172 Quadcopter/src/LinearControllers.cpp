@@ -20,26 +20,51 @@
 // Library header
 #include "LinearControllers.h"
 
-PIDController::PIDController(float desPos, float desVel, float actualPos, float actualVel) {
-    itsDesPos = desPos;
-    itsDesVel = desVel;
-    
-    itsActualPos = actualPos;
-    itsActualVel = actualVel;
+// Constructors and overloads
+PIDController::PIDController(unsigned long differentialTime, float Kp, float Kd, float Ki) {
+    //constructor overload. set private vars
+    dt = differentialTime;
+    itsKp = Kp; itsKd = Kd; itsKi = Ki;   // controller gains:: Kp: porportional, Kd: derivative, Ki: integral
+}
+
+PIDController::PIDController(unsigned long differentialTime, float Kp, float Kd, float Ki, int desiredOutput) {
+    //constructor overload. set private vars
+    dt = differentialTime;
+    itsKp = Kp; itsKd = Kd; itsKi = Ki;   // controller gains:: Kp: porportional, Kd: derivative, Ki: integral
+    itsDesiredOutput = desiredOutput;
+}
+
+PIDController::PIDController(unsigned long differentialTime, float Kp, float Kd, float Ki, int desiredOutput, int feedback) {
+    //constructor overload. set private vars
+    dt = differentialTime;
+    itsKp = Kp; itsKd = Kd; itsKi = Ki;   // controller gains:: Kp: porportional, Kd: derivative, Ki: integral
+    itsDesiredOutput = desiredOutput;
+    itsFeedback = feedback;
+}
+
+// Methods
+
+void PIDController::setGains(float Kp, float Kd, float Ki) {
+    itsKp = Kp; itsKd = Kd; itsKi = Ki; // controller gains:: Kp: porportional, Kd: derivative, Ki: integral
+}
+
+void PIDController::setDesiredOuptut(int desiredOutput) {
+    itsDesiredOutput = desiredOutput;
+}
+void PIDController::setFeedback(int feedback) {
+    itsFeedback = feedback;
 }
 
 void PIDController::getControlSignal(int *controlSignal) {
-    // calculate a differential time unit to compute the integral
-    differentialTime = currentTime - previousTime;
     
     // calculate errors
-    itsPosError = itsActualPos - itsDesPos;
-    itsVelError = itsActualVel - itsDesVel;
+    itsPorportionalError = itsDesiredOutput - itsFeedback;
+    itsDerivativeError = itsPorportionalError/dt;
     
-    itsIntegralError = itsIntegralError + (itsPosError * differentialTime); // compute the integral
+    itsIntegralError = itsIntegralError + (itsPorportionalError * dt); // compute the integral
     
     //put all together
-    *controlSignal = -itsKp*itsPosError - itsKd*itsVelError - itsKi*itsIntegralError;
+    *controlSignal = -itsKp*itsPorportionalError - itsKd*itsDerivativeError - itsKi*itsIntegralError;
     
 }
 

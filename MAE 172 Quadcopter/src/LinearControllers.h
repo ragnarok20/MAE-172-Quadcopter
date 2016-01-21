@@ -56,24 +56,31 @@
 
 //------------------------------------------------------------------------------//
 //-----------------------General PID controller object--------------------------//
-//-----input desired parameters and actual measurement to the parameter---------//
-//------returns a PWM 8 bit value to be fed to most likely a motor--------------//
 //------------------------------------------------------------------------------//
 
 class PIDController {
 public:
     //constructors and destructor
-    PIDController(float desPos, float desVel, float actualPos, float actualVel);
+    PIDController(unsigned long differentialTime){itsKp = 0; itsKd = 0; itsKi = 0; dt = differentialTime;};
+    PIDController(unsigned long differentialTime, float Kp, float Kd, float Ki);
+    PIDController(unsigned long differentialTime, float Kp, float Kd, float Ki, int desiredOutput);
+    PIDController(unsigned long differentialTime, float Kp, float Kd, float Ki, int desiredOutput, int feedback);
     ~PIDController(){};
     
     //methods
+    void setGains(float Kp, float Kd, float Ki);
+    void setDesiredOuptut(int desiredOutput);
+    void setFeedback(int input);
+    
     void getControlSignal(int *controlSignal);
+    
 private:
     int itsControlSignal;
     float itsKp, itsKd, itsKi;   // controller gains:: Kp: position, Kd: derivative, Ki: integral
-    int itsDesPos, itsActualPos, itsDesVel, itsActualVel;
-    int itsPosError, itsVelError, itsIntegralError;
-    double currentTime, previousTime, differentialTime;
+    int itsDesiredOutput, itsFeedback;
+    int itsPorportionalError;
+    float itsDerivativeError, itsIntegralError;
+    unsigned long dt;
     
 };
 
