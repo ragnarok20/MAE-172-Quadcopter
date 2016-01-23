@@ -11,7 +11,8 @@
 
 
   Currently Set up to compile on a teensy 3.1 using embededXcode.
-  Source Folders will contain hardware independent files
+  Source Folders will contain hardware independent files along with the Hardware
+  dependent files
 
 
   References
