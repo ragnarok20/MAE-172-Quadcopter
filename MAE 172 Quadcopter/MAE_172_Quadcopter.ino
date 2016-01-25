@@ -20,7 +20,7 @@
 // Core library for code-sense - IDE-based
 #if defined(WIRING) // Wiring specific
 #   include "Wiring.h"
-#elif defined(MAPLE_IDE) // Maple specific
+//#elif defined(MAPLE_IDE) // Maple specific
 #   include "WProgram.h"
 #elif defined(MPIDE) // chipKIT specific
 #   include "WProgram.h"
