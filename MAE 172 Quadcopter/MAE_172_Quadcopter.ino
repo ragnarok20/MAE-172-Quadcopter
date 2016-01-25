@@ -42,6 +42,8 @@
 #   include "Arduino.h"
 #elif defined(ARDUINO) // Arduino 1.0 and 1.5 specific
 #   include "Arduino.h"
+#elif defined(CurieIMU) // Arduino 101 Gyro
+    include "CurieIMU.h"
 #else // error
 #   error Platform not defined
 #endif // end IDE
