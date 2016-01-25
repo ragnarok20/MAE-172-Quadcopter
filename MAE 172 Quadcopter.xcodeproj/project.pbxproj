@@ -802,6 +802,12 @@
 		AAAA160121073351AA0001F9 /* flashc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = flashc.h; sourceTree = "<group>"; };
 		AAAA160121073351AA0001FB /* gpio.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = gpio.c; sourceTree = "<group>"; };
 		AAAA160121073351AA0001FC /* gpio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gpio.h; sourceTree = "<group>"; };
+		D1063C1D1C56AE17005C3C7D /* I2Cdev.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = I2Cdev.cpp; path = src/Drivers/I2Cdev.cpp; sourceTree = "<group>"; };
+		D1063C1E1C56AE17005C3C7D /* I2Cdev.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = I2Cdev.h; path = src/Drivers/I2Cdev.h; sourceTree = "<group>"; };
+		D1063C1F1C56AE17005C3C7D /* MadgwickAHRS.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = MadgwickAHRS.c; path = src/Drivers/MadgwickAHRS.c; sourceTree = "<group>"; };
+		D1063C201C56AE17005C3C7D /* MadgwickAHRS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MadgwickAHRS.h; path = src/Drivers/MadgwickAHRS.h; sourceTree = "<group>"; };
+		D1063C211C56AE17005C3C7D /* MPU9250.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MPU9250.cpp; path = src/Drivers/MPU9250.cpp; sourceTree = "<group>"; };
+		D1063C221C56AE17005C3C7D /* MPU9250.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPU9250.h; path = src/Drivers/MPU9250.h; sourceTree = "<group>"; };
 		D1FCA7F21C501A7600CBD7B6 /* Index */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Index; sourceTree = BUILT_PRODUCTS_DIR; };
 		D1FCA7F51C501A7600CBD7B6 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		D1FCA7F71C501A7600CBD7B6 /* Makefile */ = {isa = PBXFileReference; explicitFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
@@ -2070,6 +2076,19 @@
 			path = GPIO;
 			sourceTree = "<group>";
 		};
+		D1063C1C1C56ACD1005C3C7D /* Drivers */ = {
+			isa = PBXGroup;
+			children = (
+				D1063C1D1C56AE17005C3C7D /* I2Cdev.cpp */,
+				D1063C1E1C56AE17005C3C7D /* I2Cdev.h */,
+				D1063C1F1C56AE17005C3C7D /* MadgwickAHRS.c */,
+				D1063C201C56AE17005C3C7D /* MadgwickAHRS.h */,
+				D1063C211C56AE17005C3C7D /* MPU9250.cpp */,
+				D1063C221C56AE17005C3C7D /* MPU9250.h */,
+			);
+			name = Drivers;
+			sourceTree = "<group>";
+		};
 		D1FCA7E61C501A7600CBD7B6 = {
 			isa = PBXGroup;
 			children = (
@@ -2248,6 +2267,7 @@
 		D1FCA8891C501F3000CBD7B6 /* src */ = {
 			isa = PBXGroup;
 			children = (
+				D1063C1C1C56ACD1005C3C7D /* Drivers */,
 				D1FCA8931C530A3F00CBD7B6 /* HardwareSpecific */,
 				D1FCA88A1C5020B700CBD7B6 /* LinearControllers.cpp */,
 				D1FCA88B1C5020B700CBD7B6 /* LinearControllers.h */,

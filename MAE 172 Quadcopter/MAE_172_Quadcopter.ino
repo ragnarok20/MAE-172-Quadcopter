@@ -51,8 +51,8 @@
 
 //---- Defines for which board being used -----------//
 
-#define __TEENSY__
-//#define __ARDUINO101__
+//#define __TEENSY__
+#define __ARDUINO101__
 
 // Include application, user and local libraries
 #ifdef __TEENSY__
@@ -72,11 +72,13 @@
 // Add setup code
 void setup()
 {
+    initialzSystem();
     ;
 }
 
 // Add loop code
 void loop()
 {
+    processIO()
     ;
 }
