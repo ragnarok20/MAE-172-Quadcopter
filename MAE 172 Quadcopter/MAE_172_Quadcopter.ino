@@ -51,14 +51,14 @@
 
 //---- Defines for which board being used -----------//
 
-//#define __TEENSY__
-#define __ARDUINO101__
+#define __TEENSY__
+//#define __ARDUINO101__
 
 // Include application, user and local libraries
 #ifdef __TEENSY__
-    #include "/src/HardwareSpecific/Arduino/Teensy/gpio.h"
+    #include "src/HardwareSpecific/Arduino/Teensy/gpio.h"
 #elif __ARDUINO101__
-    #include "/src/HardwareSpecific/Arduino/Arduino101/gpio.h"
+    #include "src/HardwareSpecific/Arduino/Arduino101/gpio.h"
 #endif
 
 
