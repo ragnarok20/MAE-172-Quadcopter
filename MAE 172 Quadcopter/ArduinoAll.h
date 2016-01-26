@@ -1,8 +1,6 @@
 #ifndef ARDUINO_ALL_H
 #define ARDUINO_ALL_H
 
-#endif // ARDUINO_ALL_H
-
 // Core library for code-sense - IDE-based
 #if defined(WIRING) // Wiring specific
 #   include "Wiring.h"
@@ -36,3 +34,5 @@
 #else // error
 #   error Platform not defined
 #endif // end IDE
+
+#endif // ARDUINO_ALL_H
