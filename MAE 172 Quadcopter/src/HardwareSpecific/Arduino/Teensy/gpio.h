@@ -22,5 +22,9 @@
 #define gpio_cpp
 
 #include "ArduinoAll.h"
+#include "src/LinearControllers.h"
+
+extern volatile int trueEuler[3];
+extern volatile int dt;
 
 #endif

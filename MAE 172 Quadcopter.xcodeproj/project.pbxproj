@@ -808,6 +808,7 @@
 		D1063C201C56AE17005C3C7D /* MadgwickAHRS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MadgwickAHRS.h; path = src/Drivers/MadgwickAHRS.h; sourceTree = "<group>"; };
 		D1063C211C56AE17005C3C7D /* MPU9250.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MPU9250.cpp; path = src/Drivers/MPU9250.cpp; sourceTree = "<group>"; };
 		D1063C221C56AE17005C3C7D /* MPU9250.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPU9250.h; path = src/Drivers/MPU9250.h; sourceTree = "<group>"; };
+		D116DC211C596022008E8268 /* ArduinoAll.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ArduinoAll.h; sourceTree = "<group>"; };
 		D1FCA7F21C501A7600CBD7B6 /* Index */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Index; sourceTree = BUILT_PRODUCTS_DIR; };
 		D1FCA7F51C501A7600CBD7B6 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		D1FCA7F71C501A7600CBD7B6 /* Makefile */ = {isa = PBXFileReference; explicitFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
@@ -2108,6 +2109,7 @@
 		D1FCA7F41C501A7600CBD7B6 /* MAE 172 Quadcopter */ = {
 			isa = PBXGroup;
 			children = (
+				D116DC211C596022008E8268 /* ArduinoAll.h */,
 				D1FCA7F51C501A7600CBD7B6 /* main.cpp */,
 				D1FCA7F71C501A7600CBD7B6 /* Makefile */,
 				D1FCA7F91C501A7600CBD7B6 /* ReadMe.txt */,
