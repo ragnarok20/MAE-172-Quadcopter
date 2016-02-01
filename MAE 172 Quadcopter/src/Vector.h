@@ -52,6 +52,7 @@
 #define Vector_
 
 template <class T>
+
 class Vector3 {
 public:
     //constructors and destructor
@@ -95,11 +96,11 @@ public:
         
         return true;
     }
-    void operator=(const Vector3<T>& a) {
+    Vector3<T> operator=(const Vector3<T>& a) {
         T* p = new T[3];
-        for (int i = 0; i < 3; i++)
-            p[i] = a.elem[i];
-        this->elem = p;
+        elem[0] = a.elem[0];
+        elem[1] = a.elem[1];
+        elem[2] = a.elem[2];
         return *this;
     }; //copy vectors
     

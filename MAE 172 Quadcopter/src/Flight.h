@@ -54,31 +54,98 @@ include "CurieIMU.h"
 #endif // end IDE
 
 #include "LinearControllers.h"
+#include "Vector.h"
 #include "HardwareSpecific/Arduino/Teensy/gpio.h"
 
 #ifndef Flight_cpp
 #define Flight_cpp
 
-float yawGains[3];
-float pitchGains[3];
-float rollGains[3];
-float altitudeGains[3];
+// Rigid body Abstract Data Type
+class RigidBody {
+public:
+    //constructors
+    RigidBody();
+    virtual ~RigidBody(){};
+    
+    //virtual methods to overload
+    virtual void setPosition(Vector3<float>& a) = 0;
+    virtual void setVelocity(Vector3<float>& a) = 0;
+    virtual void setAcceleration(Vector3<float>& a) = 0;
+    
+    virtual void setAttitude(Vector3<float>& a) = 0;
+    virtual void setAngularRates(Vector3<float>& a) = 0;
+    virtual void setAngularAccelerations(Vector3<float>& a) = 0;
+    
+    virtual void setInertias(int& mass, int& momentOfInertia) = 0;
+    
+    //accessors
+protected:
+    //inertial Dynamics
+    int Mass;   //in grams
+    int I;      //in grams*cm^2
+    
+    // linear dynamics
+    Vector3<float> position;    //x,y,z
+    Vector3<float> velocity;      //u,v,w
+    Vector3<float> acceleration;
+    
+    //rotation dynamics
+    Vector3<float> attitude;
+    Vector3<float> angular_rates;
+    Vector3<float> angular_acc;
+    
+};
 
-int desiredYaw = 0;
-int desiredPitch = 0;
-int desiredRoll = 0;
-int desiredAltitude = 0;
+class QuadCopter : public RigidBody{
+public:
+    //constructors
+    QuadCopter();
+    QuadCopter(float* ESCSignal[]);  //output signal to esc's to be handled by gpio
+    ~QuadCopter();
+    
+    //parent methods
+    void setPosition(Vector3<float>& a) {position = a;}
+    void setVelocity(Vector3<float>& a) {velocity = a;}
+    void setAcceleration(Vector3<float>& a) {acceleration = a;}
+    
+    void setAttitude(Vector3<float>& a) {attitude = a;}
+    void setAngularRates(Vector3<float>& a){angular_rates = a;}
+    void setAngularAccelerations(Vector3<float>& a) {angular_acc = a;}
+    
+    void setInertias(int& mass, int& momentOfInertia) {Mass = mass; I = momentOfInertia;}
+    
+    //methods
+    void mixMotors();   //mix the control signals and map to the esc signal outputs
+    void steadyLevelFlight();
+    void ascend(int altitude);
+    void descend(int altitude);
+    void land();
+    
+    
+    
+private:
+    //PID gains vector: P, D, I respectively
+    Vector3<float> yawGains;
+    Vector3<float> pitchGains;
+    Vector3<float> rollGains;
+    Vector3<float> altitudeGains;
+    Vector3<int> desiredAttitude;
+    
+    int desiredYaw = 0;
+    int desiredPitch = 0;
+    int desiredRoll = 0;
+    int desiredAltitude = 0;
+    
+    PIDController<float> Yaw;
+    PIDController<float> Pitch;
+    PIDController<float> Roll;
+    PIDController<float> Altitude;
+    
+    
+    float escSignal[4];
+    
+};
 
-PIDController Yaw(dt, yawGains[0], yawGains[1], yawGains[2], desiredYaw);
-PIDController Pitch(dt, pitchGains[0], pitchGains[1], pitchGains[2], desiredPitch);
-PIDController Roll(dt, rollGains[0], rollGains[1], rollGains[2], desiredRoll);
-PIDController Altitude(dt, altitudeGains[0], altitudeGains[1], altitudeGains[2], desiredAltitude);
-
-//prototypes
-void steadyLevelFlight();
-void ascend(int altitude);
-void descend(int altitude);
-void land();
 
 
 #endif

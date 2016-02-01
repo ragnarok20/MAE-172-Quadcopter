@@ -59,29 +59,33 @@ include "CurieIMU.h"
 //-----------------------General PID controller object--------------------------//
 //------------------------------------------------------------------------------//
 
+template <class TT>
 
 class PIDController {
 public:
     //constructors and destructor
-    PIDController(unsigned long differentialTime){itsKp = 0; itsKd = 0; itsKi = 0; dt = differentialTime;};
+    PIDController(){itsKp = 0; itsKd = 0; itsKi = 0;}
+    PIDController(unsigned long& differentialTime){itsKp = 0; itsKd = 0; itsKi = 0; dt = differentialTime;}
     PIDController(unsigned long differentialTime, float Kp, float Kd, float Ki);
-    PIDController(unsigned long differentialTime, float Kp, float Kd, float Ki, int desiredOutput);
-    PIDController(unsigned long differentialTime, float Kp, float Kd, float Ki, int desiredOutput, int feedback);
+    PIDController(unsigned long differentialTime, float Kp, float Kd, float Ki, TT desiredOutput);
+    PIDController(unsigned long differentialTime, float Kp, float Kd, float Ki, TT desiredOutput, TT feedback);
     ~PIDController(){};
     
     //methods
     void setGains(float Kp, float Kd, float Ki);
-    void setDesiredOuptut(int desiredOutput);
-    void setFeedback(int input);
+    void setDesiredOuptut(TT desiredOutput);
+    void setFeedback(TT input);
+    void setDifferentialTime(unsigned long& Dt) {dt = Dt;}
     
-    void getControlSignal(int *controlSignal);
+    void update();
+    TT getControlSignal() { return itsControlSignal;}
     
 private:
-    int itsControlSignal;
+    TT itsControlSignal;
     float itsKp, itsKd, itsKi;   // controller gains:: Kp: position, Kd: derivative, Ki: integral
-    int itsDesiredOutput, itsFeedback;
-    int itsPorportionalError;
-    float itsDerivativeError, itsIntegralError;
+    TT itsDesiredOutput, itsFeedback;
+    TT itsPorportionalError;
+    TT itsDerivativeError, itsIntegralError;
     unsigned long dt;
     
 };
