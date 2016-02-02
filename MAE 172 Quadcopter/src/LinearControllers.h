@@ -59,9 +59,8 @@ include "CurieIMU.h"
 //-----------------------General PID controller object--------------------------//
 //------------------------------------------------------------------------------//
 
-template <class TT>
 
-class PIDController {
+template <class TT> class PIDController {
 public:
     //constructors and destructor
     PIDController(){itsKp = 0; itsKd = 0; itsKi = 0;}
