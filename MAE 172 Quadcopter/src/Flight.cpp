@@ -24,9 +24,9 @@
 
 //Constructor
 QuadCopter::QuadCopter() {
-    Yaw.setGains(yawGains[0],yawGains[1], yawGains[2]);
-    Pitch.setGains(pitchGains[0],pitchGains[1], pitchGains[2]);
-    Yaw.setGains(rollGains[0],rollGains[1], rollGains[2]);
+    Yaw.setGains(yawGains);
+    Pitch.setGains(pitchGains);
+    Roll.setGains(rollGains);
     
 }
 
@@ -36,9 +36,9 @@ QuadCopter::QuadCopter(float* ESCSignal[4]) {
     ESCSignal[2] = &escSignal[2];
     ESCSignal[3] = &escSignal[3];
 
-    Yaw.setGains(yawGains[0],yawGains[1], yawGains[2]);
-    Pitch.setGains(pitchGains[0],pitchGains[1], pitchGains[2]);
-    Yaw.setGains(rollGains[0],rollGains[1], rollGains[2]);
+    Yaw.setGains(yawGains);
+    Pitch.setGains(pitchGains);
+    Yaw.setGains(rollGains);
     
 }
 

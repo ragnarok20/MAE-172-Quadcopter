@@ -64,17 +64,17 @@ include "CurieIMU.h"
 class RigidBody {
 public:
     //constructors
-    RigidBody();
+    RigidBody(){};
     virtual ~RigidBody(){};
     
     //virtual methods to overload
-    virtual void setPosition(Vector3<float>& a) = 0;
-    virtual void setVelocity(Vector3<float>& a) = 0;
-    virtual void setAcceleration(Vector3<float>& a) = 0;
+    virtual void setPosition(Vector3<float> a) = 0;
+    virtual void setVelocity(Vector3<float> a) = 0;
+    virtual void setAcceleration(Vector3<float> a) = 0;
     
-    virtual void setAttitude(Vector3<float>& a) = 0;
-    virtual void setAngularRates(Vector3<float>& a) = 0;
-    virtual void setAngularAccelerations(Vector3<float>& a) = 0;
+    virtual void setAttitude(Vector3<float> a) = 0;
+    virtual void setAngularRates(Vector3<float> a) = 0;
+    virtual void setAngularAccelerations(Vector3<float> a) = 0;
     
     virtual void setInertias(int& mass, int& momentOfInertia) = 0;
     
@@ -101,16 +101,16 @@ public:
     //constructors
     QuadCopter();
     QuadCopter(float* ESCSignal[]);  //output signal to esc's to be handled by gpio
-    ~QuadCopter();
+    ~QuadCopter(){};
     
     //parent methods
-    void setPosition(Vector3<float>& a) {position = a;}
-    void setVelocity(Vector3<float>& a) {velocity = a;}
-    void setAcceleration(Vector3<float>& a) {acceleration = a;}
+    void setPosition(Vector3<float> a) {position = a;}
+    void setVelocity(Vector3<float> a) {velocity = a;}
+    void setAcceleration(Vector3<float> a) {acceleration = a;}
     
-    void setAttitude(Vector3<float>& a) {attitude = a;}
-    void setAngularRates(Vector3<float>& a){angular_rates = a;}
-    void setAngularAccelerations(Vector3<float>& a) {angular_acc = a;}
+    void setAttitude(Vector3<float> a) {attitude = a;}
+    void setAngularRates(Vector3<float> a){angular_rates = a;}
+    void setAngularAccelerations(Vector3<float> a) {angular_acc = a;}
     
     void setInertias(int& mass, int& momentOfInertia) {Mass = mass; I = momentOfInertia;}
     

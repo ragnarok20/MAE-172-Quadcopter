@@ -18,8 +18,7 @@
 /// @see		ReadMe.txt for references
 ///
 
-#ifndef gpio_cpp
-#define gpio_cpp
+#ifdef __ARDUINO101__
 
 // Core library for code-sense - IDE-based
 #if defined(WIRING) // Wiring specific
@@ -54,5 +53,7 @@ include "CurieIMU.h"
 #else // error
 #   error Platform not defined
 #endif // end IDE
+
+
 
 #endif

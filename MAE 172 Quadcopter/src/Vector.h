@@ -58,7 +58,7 @@ public:
     //constructors and destructor
     Vector3() {elem[0] = 0; elem[1] = 0; elem[2] = 0;}; //default constructor creates zero vector
     Vector3(T &x, T &y, T &z) {elem[0] = x; elem[1] = y; elem[2] = z;};
-    ~Vector3();
+    ~Vector3(){};
     
     //--------------methods-----------------//
     T magnitude() {

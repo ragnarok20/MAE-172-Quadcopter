@@ -18,8 +18,7 @@
 /// @see		ReadMe.txt for references
 ///
 
-#ifndef gpio_cpp
-#define gpio_cpp
+#ifdef __TEENSY__
 
 // Core library for code-sense - IDE-based
 #if defined(WIRING) // Wiring specific
@@ -54,9 +53,13 @@ include "CurieIMU.h"
 #else // error
 #   error Platform not defined
 #endif // end IDE
+
 #include "../../../LinearControllers.h"
 
 extern volatile int trueEuler[3];
 extern volatile int dt;
+
+void initializeSystem();
+void processIO();
 
 #endif

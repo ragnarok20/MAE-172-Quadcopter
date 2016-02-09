@@ -64,9 +64,12 @@ include "CurieIMU.h"
     #include "src/HardwareSpecific/Arduino/Arduino101/gpio.h"
 #endif
 
-
-
+#include "src/Flight.h"
+#include "src/Drivers/MadgwickAHRS.h"
 // Prototypes
+QuadCopter plas;
+
+float gx; float gy; float gz; float ax; float ay; float az;
 
 
 // Define variables and constants
@@ -75,13 +78,14 @@ include "CurieIMU.h"
 // Add setup code
 void setup()
 {
-    initialzSystem();
-    ;
+    MadgwickAHRSupdateIMU(gx,gy,gz,ax,ay,az);
+    initializeSystem();
+    
 }
 
 // Add loop code
 void loop()
 {
-    processIO()
-    ;
+    processIO();
+    
 }

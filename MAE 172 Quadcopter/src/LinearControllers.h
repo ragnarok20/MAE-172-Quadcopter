@@ -47,7 +47,7 @@
 #elif defined(ARDUINO) // Arduino 1.0 and 1.5 specific
 #   include "Arduino.h"
 #elif defined(CurieIMU) // Arduino 101 Gyro
-include "CurieIMU.h"
+#include "CurieIMU.h"
 #else // error
 #   error Platform not defined
 #endif // end IDE
@@ -55,29 +55,56 @@ include "CurieIMU.h"
 #ifndef LinearControllers_cpp
 #define LinearControllers_cpp
 
+#include "Vector.h"
 //------------------------------------------------------------------------------//
 //-----------------------General PID controller object--------------------------//
 //------------------------------------------------------------------------------//
 
 
-template <class TT> class PIDController {
+template <class TT>
+class PIDController {
 public:
-    //constructors and destructor
+    //--------constructors and destructor-------------//
     PIDController(){itsKp = 0; itsKd = 0; itsKi = 0;}
     PIDController(unsigned long& differentialTime){itsKp = 0; itsKd = 0; itsKi = 0; dt = differentialTime;}
-    PIDController(unsigned long differentialTime, float Kp, float Kd, float Ki);
-    PIDController(unsigned long differentialTime, float Kp, float Kd, float Ki, TT desiredOutput);
-    PIDController(unsigned long differentialTime, float Kp, float Kd, float Ki, TT desiredOutput, TT feedback);
+    PIDController(unsigned long differentialTime, Vector3<TT> gains) {
+        //constructor overload. set private vars
+        dt = differentialTime;
+        itsKp = gains[0]; itsKd = gains[1]; itsKi = gains[2];   // controller gains:: Kp: porportional, Kd: derivative, Ki: integral
+    }
+    
+    PIDController(unsigned long differentialTime, Vector3<TT> gains, TT desiredOutput) {
+        //constructor overload. set private vars
+        dt = differentialTime;
+        itsKp = gains[0]; itsKd = gains[1]; itsKi = gains[2];   // controller gains:: Kp: porportional, Kd: derivative, Ki: integral
+        itsDesiredOutput = desiredOutput;
+    }
+    PIDController(unsigned long differentialTime, Vector3<TT> gains, TT desiredOutput, TT feedback) {
+        //constructor overload. set private vars
+        dt = differentialTime;
+        itsKp = gains[0]; itsKd = gains[1]; itsKi = gains[2];   // controller gains:: Kp: porportional, Kd: derivative, Ki: integral
+        itsDesiredOutput = desiredOutput;
+        itsFeedback = feedback;
+    }
     ~PIDController(){};
     
-    //methods
-    void setGains(float Kp, float Kd, float Ki);
-    void setDesiredOuptut(TT desiredOutput);
-    void setFeedback(TT input);
+    //------------methods-------------------//
+    void setGains(Vector3<TT> gains) {itsKp = gains[0]; itsKd = gains[1]; itsKi = gains[2];}
+    void setDesiredOuptut(TT desiredOutput) { itsDesiredOutput = desiredOutput;}
+    void setFeedback(TT input) {itsFeedback = input;}
     void setDifferentialTime(unsigned long& Dt) {dt = Dt;}
-    
-    void update();
     TT getControlSignal() { return itsControlSignal;}
+    
+    void update() {
+        // calculate errors
+        itsPorportionalError = itsDesiredOutput - itsFeedback;
+        itsDerivativeError = itsPorportionalError/dt;
+        
+        itsIntegralError = itsIntegralError + (itsPorportionalError * dt); // compute the integral
+        
+        //put all together
+        itsControlSignal = -itsKp*itsPorportionalError - itsKd*itsDerivativeError - itsKi*itsIntegralError;
+    }
     
 private:
     TT itsControlSignal;

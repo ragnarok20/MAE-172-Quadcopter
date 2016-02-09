@@ -16,8 +16,13 @@
 // See 			gpio.h and ReadMe.txt for references
 //
 
+#ifdef __ARDUINO101__
+
 
 // Library header
 #include "gpio.h"
 
-// Code
+
+
+
+#endif

@@ -401,8 +401,10 @@
 		AA2A160121073351AA0001FC /* gpio.h in Sources */ = {isa = PBXBuildFile; fileRef = AAAA160121073351AA0001FC /* gpio.h */; };
 		D12CA8711C501A7700CBD7B6 /* MAE_172_Quadcopter.ino in Sources */ = {isa = PBXBuildFile; fileRef = D1FCA8711C501A7700CBD7B6 /* MAE_172_Quadcopter.ino */; };
 		D12CA88B1C5020B700CBD7B6 /* LinearControllers.h in Sources */ = {isa = PBXBuildFile; fileRef = D1FCA88B1C5020B700CBD7B6 /* LinearControllers.h */; };
+		D1E6E8B01C6943B5009B6C18 /* I2Cdev.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D1063C1D1C56AE17005C3C7D /* I2Cdev.cpp */; };
+		D1E6E8B11C6943C1009B6C18 /* MadgwickAHRS.c in Sources */ = {isa = PBXBuildFile; fileRef = D1063C1F1C56AE17005C3C7D /* MadgwickAHRS.c */; };
+		D1E6E8B21C6943C7009B6C18 /* MPU9250.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D1063C211C56AE17005C3C7D /* MPU9250.cpp */; };
 		D1FCA7F61C501A7600CBD7B6 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D1FCA7F51C501A7600CBD7B6 /* main.cpp */; };
-		D1FCA88C1C5020B700CBD7B6 /* LinearControllers.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D1FCA88A1C5020B700CBD7B6 /* LinearControllers.cpp */; };
 		D1FCA8961C530C3000CBD7B6 /* Flight.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D1FCA8941C530C3000CBD7B6 /* Flight.cpp */; };
 		D1FCA8991C530C5300CBD7B6 /* Filters.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D1FCA8971C530C5300CBD7B6 /* Filters.cpp */; };
 		D1FCA89F1C5310BC00CBD7B6 /* gpio.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D1FCA89D1C5310BC00CBD7B6 /* gpio.cpp */; };
@@ -927,8 +929,7 @@
 		D1FCA86E1C501A7700CBD7B6 /* embedXcode_chrono */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; name = embedXcode_chrono; path = Utilities/embedXcode_chrono; sourceTree = "<group>"; };
 		D1FCA86F1C501A7700CBD7B6 /* TemplateIcon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = TemplateIcon.icns; path = Utilities/TemplateIcon.icns; sourceTree = "<group>"; };
 		D1FCA8701C501A7700CBD7B6 /* uploader_izmir.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; name = uploader_izmir.sh; path = Utilities/uploader_izmir.sh; sourceTree = "<group>"; };
-		D1FCA8711C501A7700CBD7B6 /* MAE_172_Quadcopter.ino */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; path = MAE_172_Quadcopter.ino; sourceTree = "<group>"; };
-		D1FCA88A1C5020B700CBD7B6 /* LinearControllers.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = LinearControllers.cpp; path = src/LinearControllers.cpp; sourceTree = "<group>"; };
+		D1FCA8711C501A7700CBD7B6 /* MAE_172_Quadcopter.ino */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; name = MAE_172_Quadcopter.ino; path = "MAE 172 Quadcopter/MAE_172_Quadcopter.ino"; sourceTree = SOURCE_ROOT; };
 		D1FCA88B1C5020B700CBD7B6 /* LinearControllers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LinearControllers.h; path = src/LinearControllers.h; sourceTree = "<group>"; };
 		D1FCA8941C530C3000CBD7B6 /* Flight.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Flight.cpp; path = src/Flight.cpp; sourceTree = "<group>"; };
 		D1FCA8951C530C3000CBD7B6 /* Flight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Flight.h; path = src/Flight.h; sourceTree = "<group>"; };
@@ -2270,7 +2271,6 @@
 			children = (
 				D1063C1C1C56ACD1005C3C7D /* Drivers */,
 				D1FCA8931C530A3F00CBD7B6 /* HardwareSpecific */,
-				D1FCA88A1C5020B700CBD7B6 /* LinearControllers.cpp */,
 				D1FCA88B1C5020B700CBD7B6 /* LinearControllers.h */,
 				D116DC221C5E9189008E8268 /* Vector.h */,
 				D1FCA8941C530C3000CBD7B6 /* Flight.cpp */,
@@ -2463,7 +2463,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D1FCA88C1C5020B700CBD7B6 /* LinearControllers.cpp in Sources */,
 				D1FCA7F61C501A7600CBD7B6 /* main.cpp in Sources */,
 				D12CA8711C501A7700CBD7B6 /* MAE_172_Quadcopter.ino in Sources */,
 				D12CA88B1C5020B700CBD7B6 /* LinearControllers.h in Sources */,
@@ -2528,6 +2527,7 @@
 				AA2A160121073351AA00004D /* GSM3MobileDataNetworkProvider.h in Sources */,
 				AA2A160121073351AA00004E /* GSM3MobileMockupProvider.cpp in Sources */,
 				AA2A160121073351AA00004F /* GSM3MobileMockupProvider.h in Sources */,
+				D1E6E8B11C6943C1009B6C18 /* MadgwickAHRS.c in Sources */,
 				AA2A160121073351AA000050 /* GSM3MobileNetworkProvider.cpp in Sources */,
 				AA2A160121073351AA000051 /* GSM3MobileNetworkProvider.h in Sources */,
 				AA2A160121073351AA000052 /* GSM3MobileNetworkRegistry.cpp in Sources */,
@@ -2819,6 +2819,7 @@
 				AA2A160121073351AA0001B6 /* conf_access.h in Sources */,
 				AA2A160121073351AA0001B7 /* conf_at45dbx.h in Sources */,
 				AA2A160121073351AA0001B8 /* conf_ebi.h in Sources */,
+				D1E6E8B21C6943C7009B6C18 /* MPU9250.cpp in Sources */,
 				AA2A160121073351AA0001B9 /* conf_sd_mmc_spi.h in Sources */,
 				AA2A160121073351AA0001BA /* console.c in Sources */,
 				AA2A160121073351AA0001BB /* console.h in Sources */,
@@ -2856,6 +2857,7 @@
 				AA2A160121073351AA0001EB /* wlap_api.h in Sources */,
 				AA2A160121073351AA0001EF /* cycle_counter.h in Sources */,
 				AA2A160121073351AA0001F2 /* smc.c in Sources */,
+				D1E6E8B01C6943B5009B6C18 /* I2Cdev.cpp in Sources */,
 				AA2A160121073351AA0001F3 /* smc.h in Sources */,
 				AA2A160121073351AA0001F5 /* eic.c in Sources */,
 				AA2A160121073351AA0001F6 /* eic.h in Sources */,
