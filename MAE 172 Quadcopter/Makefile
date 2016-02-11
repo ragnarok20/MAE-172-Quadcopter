@@ -18,6 +18,7 @@
 # Typing = 0 takes none (default for application and user)
 # Otherwise, leaving empty considers all (default for local)
 
+
 # List application Arduino/chipKIT/Digispark/Energia/Maple/Microduino/Teensy/Wiring libraries here
 # default = 0 = none
 #
@@ -59,12 +60,12 @@ USER_LIBS_LIST = 0
 # If not defined, each IDE has its own SKETCHBOOK_DIR (default)
 # To share the same SKETCHBOOK_DIR along all IDEs, define
 #
-#SKETCHBOOK_DIR =
+#SKETCHBOOK_DIR = /Users/sagethayer/Documents/MAE 172 Quadcopter/MAE 172 Quadcopter/
 
 # SERIAL_BAUDRATE for the serial console, 9600 by default
 # Uncomment and specify another speed
 #
-#SERIAL_BAUDRATE = 115200
+SERIAL_BAUDRATE = 115200
 
 
 # Miscellaneous

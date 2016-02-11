@@ -19,6 +19,8 @@
 ///
 
 #ifdef __TEENSY__
+#ifndef __gpio_h__
+#define __gpio_h__
 
 // Core library for code-sense - IDE-based
 #if defined(WIRING) // Wiring specific
@@ -55,6 +57,12 @@ include "CurieIMU.h"
 #endif // end IDE
 
 #include "../../../LinearControllers.h"
+#include "../../../Drivers/MPU6050.h"
+#include <Wire.h>
+
+MPU6050 mpu;
+
+const int motor_LED_test[4] = {5,4,3,6};
 
 extern volatile int trueEuler[3];
 extern volatile int dt;
@@ -62,4 +70,5 @@ extern volatile int dt;
 void initializeSystem();
 void processIO();
 
+#endif
 #endif

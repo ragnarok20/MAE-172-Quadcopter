@@ -60,16 +60,20 @@ include "CurieIMU.h"
 // Include application, user and local libraries
 #ifdef __TEENSY__
     #include "src/HardwareSpecific/Arduino/Teensy/gpio.h"
+    #include "src/HardwareSpecific/Arduino/Teensy/gpio.cpp"
 #elif __ARDUINO101__
     #include "src/HardwareSpecific/Arduino/Arduino101/gpio.h"
 #endif
 
 #include "src/Flight.h"
 #include "src/Drivers/MadgwickAHRS.h"
-// Prototypes
-QuadCopter plas;
 
-float gx; float gy; float gz; float ax; float ay; float az;
+// Prototypes
+void initializeSystem();
+void processIO();
+
+QuadCopter test;
+
 
 
 // Define variables and constants
@@ -78,7 +82,6 @@ float gx; float gy; float gz; float ax; float ay; float az;
 // Add setup code
 void setup()
 {
-    MadgwickAHRSupdateIMU(gx,gy,gz,ax,ay,az);
     initializeSystem();
     
 }
@@ -87,5 +90,6 @@ void setup()
 void loop()
 {
     processIO();
+    test.steadyLevelFlight();
     
 }

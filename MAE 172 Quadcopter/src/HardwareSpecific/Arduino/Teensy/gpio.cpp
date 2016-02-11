@@ -23,20 +23,25 @@
 
 // Code
 
-const int motor_LED_test[4] = {4,3,2,5}
-
 void initializeSystem() {
+    Serial.begin(115200);
+    Wire.begin();
+    
     pinMode(motor_LED_test[0],OUTPUT);
     pinMode(motor_LED_test[1],OUTPUT);
     pinMode(motor_LED_test[2],OUTPUT);
     pinMode(motor_LED_test[3],OUTPUT);
+    mpu.initialize();
 }
 
 void processIO() {
+    Serial.println(mpu.testConnection());
+    Serial.println("test");
+    
     analogWrite(motor_LED_test[0], 255);
-    analogWrite(motor_LED_test[1], 205);
-    analogWrite(motor_LED_test[2], 155);
-    analogWrite(motor_LED_test[3], 55);
+    analogWrite(motor_LED_test[1], 255);
+    analogWrite(motor_LED_test[2], 255);
+    analogWrite(motor_LED_test[3], 255);
 }
 
 #endif
