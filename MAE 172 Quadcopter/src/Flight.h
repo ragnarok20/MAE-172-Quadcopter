@@ -55,7 +55,6 @@ include "CurieIMU.h"
 
 #include "LinearControllers.h"
 #include "Vector.h"
-#include "HardwareSpecific/Arduino/Teensy/gpio.h"
 
 #ifndef Flight_cpp
 #define Flight_cpp
@@ -100,7 +99,7 @@ class QuadCopter : public RigidBody{
 public:
     //constructors
     QuadCopter();
-    QuadCopter(float* ESCSignal[]);  //output signal to esc's to be handled by gpio
+    QuadCopter(float* ESCSignal[4]);  //output signal to esc's to be handled by gpio
     ~QuadCopter(){};
     
     //parent methods

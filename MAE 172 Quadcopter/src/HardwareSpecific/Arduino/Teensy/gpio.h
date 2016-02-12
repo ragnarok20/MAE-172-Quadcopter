@@ -18,7 +18,6 @@
 /// @see		ReadMe.txt for references
 ///
 
-#ifdef __TEENSY__
 #ifndef __gpio_h__
 #define __gpio_h__
 
@@ -57,18 +56,53 @@ include "CurieIMU.h"
 #endif // end IDE
 
 #include "../../../LinearControllers.h"
+#include "../../../Vector.h"
+#include "../../../Flight.h"
 #include "../../../Drivers/MPU6050.h"
 #include <Wire.h>
 
-MPU6050 mpu;
 
-const int motor_LED_test[4] = {5,4,3,6};
+//-----defines-----//
+#define ECHO
+#define sampleFreq 100.0f		// sample frequency in Hz
 
-extern volatile int trueEuler[3];
-extern volatile int dt;
-
+//---- prototypes -------//
 void initializeSystem();
 void processIO();
 
+//-----IMU------//
+MPU6050 mpu;
+
+Vector3<int16_t> acc_raw;
+Vector3<int16_t> gyro_raw;
+Vector3<float> attitude;
+
+bool IMU_online = false;
+
+//----Timer-----//
+// variables to figure out cycle rate
+double begin_of_loop = 0;
+double loop_time = 0;
+double measured_cycle_rate = sampleFreq;
+int delay_time = 0;
+
+//------Motor pins--------//
+const int motor_LED_test[4] = {5,4,3,6};
+int mapped_signal[4];
+
+// ----- Quad -------//
+float* signals[4];
+QuadCopter alpha(signals);
+
+
 #endif
-#endif
+
+
+
+
+
+
+
+
+
+

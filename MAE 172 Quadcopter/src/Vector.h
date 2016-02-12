@@ -76,7 +76,7 @@ public:
             v.elem[i] = elem[i]/mag;
         return v;
     }
-    Vector3<T>& dot_with(Vector3<T>& a) {
+    T dot_with(Vector3<T>& a) {
         Vector3<T> v; //init's a 0 Vector
         T result = 0;
         
@@ -97,15 +97,16 @@ public:
         return true;
     }
     Vector3<T> operator=(const Vector3<T>& a) {
-        T* p = new T[3];
+        //copy vectors
         elem[0] = a.elem[0];
         elem[1] = a.elem[1];
         elem[2] = a.elem[2];
         return *this;
-    }; //copy vectors
+    }
     
     Vector3<T> operator+(const Vector3<T>& a) {
         Vector3<T> v; //init's a 0 Vector
+        //add individual elements
         for (int i = 0; i < 3; i++)
             v.elem[i] = elem[i] + a.elem[i];
         return v;
@@ -113,18 +114,21 @@ public:
     
     Vector3<T> operator-(const Vector3<T>& a) {
         Vector3<T> v; //init's a 0 Vector
+        //subtract individual elements
         for (int i = 0; i < 3; i++)
             v.elem[i] = elem[i] - a.elem[i];
         return v;
     }
+    
+    //Cross Product
     Vector3<T> operator*(const Vector3<T>& a) {
         Vector3<T> v; //init's a 0 Vector
-        
+    
         v.elem[1] = elem[2]*a.elem[3] - elem[3]*a.elem[2];
         v.elem[2] = elem[3]*a.elem[1] - elem[1]*a.elem[3];
         v.elem[3] = elem[1]*a.elem[2] - elem[2]*a.elem[1];
         return v;
-    }//Cross Product
+    }
 
 
     

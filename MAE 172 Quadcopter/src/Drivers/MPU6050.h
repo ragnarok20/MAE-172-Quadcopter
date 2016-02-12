@@ -411,6 +411,10 @@ class MPU6050 {
         MPU6050(uint8_t address);
 
         void initialize();
+    
+        //calculate gyro offsets
+        void calibrateGyro();
+    
         bool testConnection();
 
         // AUX_VDDIO register

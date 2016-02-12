@@ -67,6 +67,107 @@ void MPU6050::initialize() {
     setSleepEnabled(false); // thanks to Jack Elston for pointing this one out!
 }
 
+void MPU6050::calibrateGyro() {
+    uint16_t bias_calc_cycles = 10;      //amount of FIFO buffer cycles to average over
+    uint8_t data[6]; // data array to hold accelerometer and gyro x, y, z, data
+    uint16_t i, ii, packet_count, fifo_count;
+    int32_t gyro_bias[3]  = {0, 0, 0};
+    int32_t gyro_bias_total[3]  = {0, 0, 0};
+    
+    
+    // reset device
+    I2Cdev::writeByte(devAddr,MPU6050_RA_PWR_MGMT_1, 0x80); // Write a one to bit 7 reset bit; toggle reset device
+    delay(100);
+    
+    // get stable time source; Auto select clock source to be PLL gyroscope reference if ready
+    // else use the internal oscillator, bits 2:0 = 001
+    I2Cdev::writeByte(devAddr,MPU6050_RA_PWR_MGMT_1, 0x01);
+    I2Cdev::writeByte(devAddr,MPU6050_RA_PWR_MGMT_2, 0x00);
+    delay(200);
+    
+    // Configure device for bias calculation
+    I2Cdev::writeByte(devAddr,MPU6050_RA_INT_ENABLE, 0x00);   // Disable all interrupts
+    I2Cdev::writeByte(devAddr,MPU6050_RA_FIFO_EN, 0x00);      // Disable FIFO
+    I2Cdev::writeByte(devAddr,MPU6050_RA_PWR_MGMT_1, 0x00);   // Turn on internal clock source
+    I2Cdev::writeByte(devAddr,MPU6050_RA_I2C_MST_CTRL, 0x00); // Disable I2C master
+    I2Cdev::writeByte(devAddr,MPU6050_RA_USER_CTRL, 0x00);    // Disable FIFO and I2C master modes
+    I2Cdev::writeByte(devAddr,MPU6050_RA_USER_CTRL, 0x0C);    // Reset FIFO and DMP
+    delay(15);
+    
+    // Configure MPU6050 gyro for bias calculation
+    I2Cdev::writeByte(devAddr,MPU6050_RA_CONFIG, 0x01);      // Set low-pass filter to 188 Hz
+    I2Cdev::writeByte(devAddr,MPU6050_RA_SMPLRT_DIV, 0x00);  // Set sample rate to 1 kHz
+    I2Cdev::writeByte(devAddr,MPU6050_RA_GYRO_CONFIG, 0x00);  // Set gyro full-scale to 250 degrees per second, maximum sensitivity
+    delay(100);
+    for (i = 0; i < bias_calc_cycles; i++) {
+        
+        gyro_bias[0] = 0;
+        gyro_bias[1] = 0;
+        gyro_bias[2] = 0;
+        
+        // Configure FIFO to capture gyro data for bias calculation
+        I2Cdev::writeByte(devAddr,MPU6050_RA_USER_CTRL, 0x40);   // Enable FIFO
+        I2Cdev::writeByte(devAddr,MPU6050_RA_FIFO_EN, 0b01110000);     // Enable gyro for FIFO buffer at set sample rate (max size 512 bytes in MPU-9250)
+        delay(10); // accumulate 10 samples in 10 milliseconds = 60 bytes
+        
+        // At end of sample accumulation, turn off FIFO sensor read
+        I2Cdev::writeByte(devAddr,MPU6050_RA_FIFO_EN, 0x00);        // Disable gyro for FIFO
+        I2Cdev::readByte(devAddr,MPU6050_RA_FIFO_COUNTH, &data[0], 2); // read FIFO sample count
+        fifo_count = ((uint16_t)data[0] << 8) | data[1];
+        packet_count = fifo_count/6;// How many sets of full gyro data for averaging
+        
+        for (ii = 0; ii < packet_count; ii++) {
+            int16_t gyro_temp[3] = {0, 0, 0};
+            I2Cdev::readBytes(devAddr,MPU6050_RA_FIFO_R_W, 6, &data[0]); // read data for averaging
+            
+            gyro_temp[0]  = (int16_t) (((int16_t)data[0] << 8) | data[1]);
+            gyro_temp[1]  = (int16_t) (((int16_t)data[2] << 8) | data[3]);
+            gyro_temp[2]  = (int16_t) (((int16_t)data[4] << 8) | data[5]);
+            
+            gyro_bias[0]  += (int32_t) gyro_temp[0];
+            gyro_bias[1]  += (int32_t) gyro_temp[1];
+            gyro_bias[2]  += (int32_t) gyro_temp[2];
+            
+        }
+        
+        // average the bias found in the fifo buffer
+        gyro_bias[0]  /= (int32_t) packet_count;
+        gyro_bias[1]  /= (int32_t) packet_count;
+        gyro_bias[2]  /= (int32_t) packet_count;
+        
+        // accumalate a total across all the fifo buffer cycles
+        gyro_bias_total[0] += gyro_bias[0];
+        gyro_bias_total[1] += gyro_bias[1];
+        gyro_bias_total[2] += gyro_bias[2];
+        
+    }
+    
+    // the total average
+    gyro_bias_total[0] /= (int32_t)bias_calc_cycles;
+    gyro_bias_total[1] /= (int32_t)bias_calc_cycles;
+    gyro_bias_total[2] /= (int32_t)bias_calc_cycles;
+    
+    delay(2000);
+    
+    // Construct the gyro biases for push to the hardware gyro bias registers, which are reset to zero upon device startup
+    data[0] = (-gyro_bias_total[0]/4  >> 8) & 0xFF; // Divide by 4 to get 32.9 LSB per deg/s to conform to expected bias input format
+    data[1] = (-gyro_bias_total[0]/4)       & 0xFF; // Biases are additive, so change sign on calculated average gyro biases
+    data[2] = (-gyro_bias_total[1]/4  >> 8) & 0xFF;
+    data[3] = (-gyro_bias_total[1]/4)       & 0xFF;
+    data[4] = (-gyro_bias_total[2]/4  >> 8) & 0xFF;
+    data[5] = (-gyro_bias_total[2]/4)       & 0xFF;
+    
+    // Push gyro biases to hardware registers
+    I2Cdev::writeByte(devAddr,MPU6050_RA_XG_OFFS_USRH, data[0]);
+    I2Cdev::writeByte(devAddr,MPU6050_RA_XG_OFFS_USRL, data[1]);
+    I2Cdev::writeByte(devAddr,MPU6050_RA_YG_OFFS_USRH, data[2]);
+    I2Cdev::writeByte(devAddr,MPU6050_RA_YG_OFFS_USRL, data[3]);
+    I2Cdev::writeByte(devAddr,MPU6050_RA_ZG_OFFS_USRH, data[4]);
+    I2Cdev::writeByte(devAddr,MPU6050_RA_ZG_OFFS_USRL, data[5]);
+    
+    
+}
+
 /** Verify the I2C connection.
  * Make sure the device is connected and responds as expected.
  * @return True if connection is valid, false otherwise

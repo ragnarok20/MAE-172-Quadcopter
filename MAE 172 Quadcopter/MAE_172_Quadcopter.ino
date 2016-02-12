@@ -68,12 +68,6 @@ include "CurieIMU.h"
 #include "src/Flight.h"
 #include "src/Drivers/MadgwickAHRS.h"
 
-// Prototypes
-void initializeSystem();
-void processIO();
-
-QuadCopter test;
-
 
 
 // Define variables and constants
@@ -90,6 +84,5 @@ void setup()
 void loop()
 {
     processIO();
-    test.steadyLevelFlight();
     
 }
