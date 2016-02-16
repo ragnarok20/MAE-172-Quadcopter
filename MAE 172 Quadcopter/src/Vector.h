@@ -77,7 +77,6 @@ public:
         return v;
     }
     T dot_with(Vector3<T>& a) {
-        Vector3<T> v; //init's a 0 Vector
         T result = 0;
         
         for (int i = 0; i < 3; i++)
@@ -102,6 +101,22 @@ public:
         elem[1] = a.elem[1];
         elem[2] = a.elem[2];
         return *this;
+    }
+    operator Vector3<int>() {
+        //change to integers
+        Vector3<int> v;
+        v.elem[0] = (int)elem[0];
+        v.elem[1] = (int)elem[1];
+        v.elem[2] = (int)elem[2];
+        return v;
+    }
+    operator Vector3<short>() {
+        //change to integers
+        Vector3<short> v;
+        v.elem[0] = (short)elem[0];
+        v.elem[1] = (short)elem[1];
+        v.elem[2] = (short)elem[2];
+        return v;
     }
     
     Vector3<T> operator+(const Vector3<T>& a) {
@@ -129,10 +144,18 @@ public:
         v.elem[3] = elem[1]*a.elem[2] - elem[2]*a.elem[1];
         return v;
     }
+    //Scalar times the vector
+    Vector3<T> operator*(const T& a) {
+        Vector3<T> v; //init's a 0 Vector
+        
+        v.elem[1] = elem[0] * a;
+        v.elem[2] = elem[1] * a;
+        v.elem[3] = elem[2] * a;
+        return v;
+    }
 
 
-    
-private:
+    //elements
     T elem[3];
     
 };

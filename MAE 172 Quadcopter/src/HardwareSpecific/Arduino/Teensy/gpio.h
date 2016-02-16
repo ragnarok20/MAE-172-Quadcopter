@@ -64,7 +64,11 @@ include "CurieIMU.h"
 
 //-----defines-----//
 #define ECHO
-#define sampleFreq 100.0f		// sample frequency in Hz
+#define sampleFreq 200.0f		// sample frequency in Hz
+#define delayTime ((1/sampleFreq)*1000.0f)		// sample frequency in Hz
+
+#define signed_32bits 2147483648
+#define signed_16bits 32767
 
 //---- prototypes -------//
 void initializeSystem();
@@ -75,24 +79,26 @@ MPU6050 mpu;
 
 Vector3<int16_t> acc_raw;
 Vector3<int16_t> gyro_raw;
-Vector3<float> attitude;
+Vector3<float> Attitude;
+Vector3<int> AttitudeI;
 
 bool IMU_online = false;
 
 //----Timer-----//
 // variables to figure out cycle rate
-double begin_of_loop = 0;
-double loop_time = 0;
-double measured_cycle_rate = sampleFreq;
+unsigned long begin_of_loop = 0;
+unsigned long loop_time = 0;    //milliseconds
+float dt = (float)loop_time/1000;   //seconds
+float measured_cycle_rate = sampleFreq;
 int delay_time = 0;
 
 //------Motor pins--------//
 const int motor_LED_test[4] = {5,4,3,6};
-int mapped_signal[4];
+short mapped_signal[4];
 
 // ----- Quad -------//
-float* signals[4];
-QuadCopter alpha(signals);
+int *signals[4];
+QuadCopter alpha(&dt, signals);
 
 
 #endif

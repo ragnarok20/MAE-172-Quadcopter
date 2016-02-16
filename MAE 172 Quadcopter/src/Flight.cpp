@@ -23,22 +23,64 @@
 // Code
 
 //Constructor
-QuadCopter::QuadCopter() {
+QuadCopter::QuadCopter(float* Dt) {
+
+    Yaw.setDifferentialTime(Dt);
+    Pitch.setDifferentialTime(Dt);
+    Roll.setDifferentialTime(Dt);
+    
+    //Set the controller feedbacks (actual position)
+    Yaw.setFeedback(&attitude[2]);
+    Pitch.setFeedback(&attitude[0]);
+    Roll.setFeedback(&attitude[1]);
+    
+    //Standard gains
+    yawGains[0] = 1.0; yawGains[1] = 10.0; yawGains[2] = .01;   //P, D, I
+    pitchGains[0] = 1.0; pitchGains[1] = 10.0; pitchGains[2] = .01;   //P, D, I
+    rollGains[0] = 1.0; rollGains[1] = 10.0; rollGains[2] = .01;   //P, D, I
+    
+    //Standard Mixer Percent
+    yawPercent = .2;
+    pitchPercent = .4;
+    rollPercent = .4;
+    
     Yaw.setGains(yawGains);
     Pitch.setGains(pitchGains);
     Roll.setGains(rollGains);
     
 }
 
-QuadCopter::QuadCopter(float* ESCSignal[4]) {
+QuadCopter::QuadCopter(float* Dt, T* ESCSignal[4]) {
+    Yaw.setDifferentialTime(Dt);
+    Pitch.setDifferentialTime(Dt);
+    Roll.setDifferentialTime(Dt);
+    
     ESCSignal[0] = &escSignal[0];
     ESCSignal[1] = &escSignal[1];
     ESCSignal[2] = &escSignal[2];
     ESCSignal[3] = &escSignal[3];
+    
+    //Set the controller feedbacks (actual position)
+    Yaw.setFeedback(&attitude[2]);
+    Pitch.setFeedback(&attitude[0]);
+    Roll.setFeedback(&attitude[1]);
+    
+    //Standard gains
+    yawGains[0] = 1.0; yawGains[1] = 10.0; yawGains[2] = .1;   //P, D, I
+    pitchGains[0] = 1.0; pitchGains[1] = 10.0; pitchGains[2] = .1;   //P, D, I
+    rollGains[0] = 1.0; rollGains[1] = 10.0; rollGains[2] = .1;   //P, D, I
+    
+    yawGains = yawGains *10;
+    pitchGains = pitchGains *10;
+    rollGains = rollGains *10;
+    
+    yawPercent = .2;
+    pitchPercent = .4;
+    rollPercent = .4;
 
     Yaw.setGains(yawGains);
     Pitch.setGains(pitchGains);
-    Yaw.setGains(rollGains);
+    Roll.setGains(rollGains);
     
 }
 
@@ -48,27 +90,33 @@ void QuadCopter::mixMotors() {
     //positve yaw is a spin to the right
     
     //stabilization or control of each axis
-    escSignal[0] = -Yaw.getControlSignal()/2 - Roll.getControlSignal()/2 - Pitch.getControlSignal()/2;            //motor 1
-    escSignal[1] = Yaw.getControlSignal()/2 - Roll.getControlSignal()/2 + Pitch.getControlSignal()/2;           //motor 2
-    escSignal[2] = Yaw.getControlSignal()/2 + Roll.getControlSignal()/2 - Pitch.getControlSignal()/2;           //motor 3
-    escSignal[3] = -Yaw.getControlSignal()/2 + Roll.getControlSignal()/2 + Pitch.getControlSignal()/2;          //motor 4
+    escSignal[0] = -(yawPercent)*Yaw.getControlSignal()/2 + (rollPercent)*Roll.getControlSignal()/2 + (pitchPercent)*Pitch.getControlSignal()/2;            //motor 1
+    escSignal[1] = (yawPercent)*Yaw.getControlSignal()/2 + (rollPercent)*Roll.getControlSignal()/2 - (pitchPercent)*Pitch.getControlSignal()/2;           //motor 2
+    escSignal[2] = (yawPercent)*Yaw.getControlSignal()/2 - (rollPercent)*Roll.getControlSignal()/2 + (pitchPercent)*Pitch.getControlSignal()/2;           //motor 3
+    escSignal[3] = -(yawPercent)*Yaw.getControlSignal()/2 - (rollPercent)*Roll.getControlSignal()/2 - (pitchPercent)*Pitch.getControlSignal()/2;          //motor 4
     
+   /*
     //append altitude control
     escSignal[0] += Altitude.getControlSignal();            //motor 1
     escSignal[1] += Altitude.getControlSignal();           //motor 2
     escSignal[2] += Altitude.getControlSignal();           //motor 3
     escSignal[3] += Altitude.getControlSignal();          //motor 4
-    
+    */
     
 }
 // method to hold the quad level and at a set hieght 
 void QuadCopter::steadyLevelFlight() {
-    desiredAltitude = 100;  // in cm. will start with a hover 1m above ground
     
-    // 0 degrees for level
-    desiredAttitude[0] = 0;
-    desiredAttitude[1] = 0;
-    desiredAttitude[2] = 0;
+    //Set the controller desired position
+    Yaw.setDesiredOuptut(0);
+    Pitch.setDesiredOuptut(0);
+    Roll.setDesiredOuptut(0);
+    
+    Yaw.update();
+    Pitch.update();
+    Roll.update();
+    
+    this->mixMotors();
     
 }
 

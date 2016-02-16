@@ -68,7 +68,7 @@ void MPU6050::initialize() {
 }
 
 void MPU6050::calibrateGyro() {
-    uint16_t bias_calc_cycles = 10;      //amount of FIFO buffer cycles to average over
+    uint16_t bias_calc_cycles = 70;      //amount of FIFO buffer cycles to average over
     uint8_t data[6]; // data array to hold accelerometer and gyro x, y, z, data
     uint16_t i, ii, packet_count, fifo_count;
     int32_t gyro_bias[3]  = {0, 0, 0};
@@ -108,7 +108,7 @@ void MPU6050::calibrateGyro() {
         // Configure FIFO to capture gyro data for bias calculation
         I2Cdev::writeByte(devAddr,MPU6050_RA_USER_CTRL, 0x40);   // Enable FIFO
         I2Cdev::writeByte(devAddr,MPU6050_RA_FIFO_EN, 0b01110000);     // Enable gyro for FIFO buffer at set sample rate (max size 512 bytes in MPU-9250)
-        delay(10); // accumulate 10 samples in 10 milliseconds = 60 bytes
+        delay(20); // accumulate 10 samples in 10 milliseconds = 60 bytes
         
         // At end of sample accumulation, turn off FIFO sensor read
         I2Cdev::writeByte(devAddr,MPU6050_RA_FIFO_EN, 0x00);        // Disable gyro for FIFO

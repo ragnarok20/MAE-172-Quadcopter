@@ -59,6 +59,10 @@ include "CurieIMU.h"
 #ifndef Flight_cpp
 #define Flight_cpp
 
+//Easy way to switch between math types of the controller
+typedef int T;
+//typedef float T;
+
 // Rigid body Abstract Data Type
 class RigidBody {
 public:
@@ -67,13 +71,13 @@ public:
     virtual ~RigidBody(){};
     
     //virtual methods to overload
-    virtual void setPosition(Vector3<float> a) = 0;
-    virtual void setVelocity(Vector3<float> a) = 0;
-    virtual void setAcceleration(Vector3<float> a) = 0;
+    virtual void setPosition(Vector3<T> a) = 0;
+    virtual void setVelocity(Vector3<T> a) = 0;
+    virtual void setAcceleration(Vector3<T> a) = 0;
     
-    virtual void setAttitude(Vector3<float> a) = 0;
-    virtual void setAngularRates(Vector3<float> a) = 0;
-    virtual void setAngularAccelerations(Vector3<float> a) = 0;
+    virtual void setAttitude(Vector3<T> a) = 0;
+    virtual void setAngularRates(Vector3<T> a) = 0;
+    virtual void setAngularAccelerations(Vector3<T> a) = 0;
     
     virtual void setInertias(int& mass, int& momentOfInertia) = 0;
     
@@ -84,42 +88,48 @@ protected:
     int I;      //in grams*cm^2
     
     // linear dynamics
-    Vector3<float> position;    //x,y,z
-    Vector3<float> velocity;      //u,v,w
-    Vector3<float> acceleration;
+    Vector3<T> position;    //x,y,z
+    Vector3<T> velocity;      //u,v,w
+    Vector3<T> acceleration;
     
     //rotation dynamics
-    Vector3<float> attitude;
-    Vector3<float> angular_rates;
-    Vector3<float> angular_acc;
+    Vector3<T> attitude;
+    Vector3<T> angular_rates;
+    Vector3<T> angular_acc;
     
 };
 
 class QuadCopter : public RigidBody{
 public:
     //constructors
-    QuadCopter();
-    QuadCopter(float* ESCSignal[4]);  //output signal to esc's to be handled by gpio
+    QuadCopter(float *Dt);
+    QuadCopter(float *Dt, T* ESCSignal[4]);  //output signal to esc's to be handled by gpio
     ~QuadCopter(){};
     
     //parent methods
-    void setPosition(Vector3<float> a) {position = a;}
-    void setVelocity(Vector3<float> a) {velocity = a;}
-    void setAcceleration(Vector3<float> a) {acceleration = a;}
+    void setPosition(Vector3<T> a) {position = a;}
+    void setVelocity(Vector3<T> a) {velocity = a;}
+    void setAcceleration(Vector3<T> a) {acceleration = a;}
     
-    void setAttitude(Vector3<float> a) {attitude = a;}
-    void setAngularRates(Vector3<float> a){angular_rates = a;}
-    void setAngularAccelerations(Vector3<float> a) {angular_acc = a;}
+    void setAttitude(Vector3<T> a) {attitude = a;}
+    void setAngularRates(Vector3<T> a){angular_rates = a;}
+    void setAngularAccelerations(Vector3<T> a) {angular_acc = a;}
     
     void setInertias(int& mass, int& momentOfInertia) {Mass = mass; I = momentOfInertia;}
     
     //methods
     void mixMotors();   //mix the control signals and map to the esc signal outputs
     void steadyLevelFlight();
-    void ascend(int altitude);
-    void descend(int altitude);
+    void ascend(T altitude);
+    void descend(T altitude);
     void land();
     
+    //public types
+    
+    PIDController<T> Yaw;
+    PIDController<T> Pitch;
+    PIDController<T> Roll;
+    PIDController<T> Altitude;
     
     
 private:
@@ -128,20 +138,17 @@ private:
     Vector3<float> pitchGains;
     Vector3<float> rollGains;
     Vector3<float> altitudeGains;
-    Vector3<int> desiredAttitude;
+    float yawPercent, pitchPercent, rollPercent;   //will represent how much influence on the mixer each controller has
     
-    int desiredYaw = 0;
-    int desiredPitch = 0;
-    int desiredRoll = 0;
-    int desiredAltitude = 0;
+    Vector3<T> desiredAttitude;
     
-    PIDController<float> Yaw;
-    PIDController<float> Pitch;
-    PIDController<float> Roll;
-    PIDController<float> Altitude;
+    T desiredYaw = 0;
+    T desiredPitch = 0;
+    T desiredRoll = 0;
+    T desiredAltitude = 0;
     
     
-    float escSignal[4];
+    T escSignal[4];
     
 };
 

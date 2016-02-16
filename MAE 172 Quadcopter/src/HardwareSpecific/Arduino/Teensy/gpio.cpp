@@ -88,46 +88,79 @@ void processIO() {
          
          //integrate gyro rate to get angle
          */
-        attitude[0] += gyro_raw[0]*1/measured_cycle_rate;   //pitch
-        attitude[1] += gyro_raw[1]*1/measured_cycle_rate;   //roll
-        attitude[2] += gyro_raw[2]*1/measured_cycle_rate;   //yaw
+        Attitude[0] += gyro_raw[0]/measured_cycle_rate;   //pitch
+        Attitude[1] += gyro_raw[1]/measured_cycle_rate;   //roll
+        Attitude[2] += gyro_raw[2]/measured_cycle_rate;   //yaw
         
     }
     
-    //---- update true attitude of the quad ----//
-    alpha.setPosition(attitude);
+    //---- update true Attitude of the quad & Fly----//
+
+    alpha.setAttitude((Vector3<int>)Attitude);
+    alpha.steadyLevelFlight();
 
     // ------ ESC Signal Handling ---------//
     //constrain signals to int
+    /*
     int i;
     for (i=0; i<4; i++) {
-        if ((int)signals[i] >= 65535) {
+        if ((int)*signals[i] >= 65535) {
             mapped_signal[i] = 65535;
         }
         else {
-            mapped_signal[i] = (int)signals[i];
+            mapped_signal[i] = (int)*signals[i];
         }
     }
-    
-    // map to 8bit PWM  for test
-    mapped_signal[0] = map(mapped_signal[0],0,65535,0,255);
-    mapped_signal[1] = map(mapped_signal[1],0,65535,0,255);
-    mapped_signal[2] = map(mapped_signal[2],0,65535,0,255);
-    mapped_signal[3] = map(mapped_signal[3],0,65535,0,255);
+    */
+    // map from 32 bit to 8bit PWM  for test
+    mapped_signal[0] = map(*signals[0],-signed_16bits,signed_16bits,50,255);
+    mapped_signal[1] = map(*signals[1],-signed_16bits,signed_16bits,50,255);
+    mapped_signal[2] = map(*signals[2],-signed_16bits,signed_16bits,50,255);
+    mapped_signal[3] = map(*signals[3],-signed_16bits,signed_16bits,50,255);
 
+    
     analogWrite(motor_LED_test[0], mapped_signal[0]);
     analogWrite(motor_LED_test[1], mapped_signal[1]);
     analogWrite(motor_LED_test[2], mapped_signal[2]);
     analogWrite(motor_LED_test[3], mapped_signal[3]);
     
-    //------Timer update -------//
-    loop_time = millis() - begin_of_loop;     //milliseconds
-    measured_cycle_rate = 1000*(1/loop_time);   //hz
-    if (measured_cycle_rate > sampleFreq) {
-        delay_time = ((float)(1/sampleFreq)*1000) - loop_time;
-        delay(delay_time);
+
+    
+    //------ Echo to Screen if Defined ----------//
+#ifdef ECHO
+    
+    AttitudeI = (Vector3<int>)Attitude;
+    
+    if (IMU_online) {
+        Serial.print("yaw: ");
+        Serial.print(AttitudeI[2]);
+        Serial.print("\t\t pitch: ");
+        Serial.print(AttitudeI[0]);
+        Serial.print("\t roll 3: ");
+        Serial.print(AttitudeI[1]);
+        
+        
+        Serial.print("\t motor 1: ");
+        Serial.print(*signals[0]);
+        Serial.print("\t motor 2: ");
+        Serial.print(*signals[1]);
+        Serial.print("\t motor 3: ");
+        Serial.print(*signals[2]);
+        Serial.print("\t motor 4: ");
+        Serial.print(*signals[3]);
+        
+        
+        Serial.print("\t Sample Rate: ");
+        Serial.println(measured_cycle_rate);
     }
+
+#endif
+    
+    //------Timer update -------//
+    while (millis() - begin_of_loop < delayTime);
+    
     // remeasure
     loop_time = millis() - begin_of_loop;     //milliseconds
-    measured_cycle_rate = 1000*(1/loop_time);   //hz
+    dt = (float)loop_time/1000;
+    measured_cycle_rate = (1000*(1/(float)loop_time));   //hz
 }
