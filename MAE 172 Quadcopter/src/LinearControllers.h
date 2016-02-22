@@ -96,10 +96,6 @@ public:
     TT getControlSignal() { return (TT)itsControlSignal;}
     
     void update() {
-        //reset
-        itsPorportionalError = 0;
-        itsDerivativeError = 0;
-        itsControlSignal = 0;
         
         // calculate errors
         itsPorportionalError = itsDesiredOutput - (*itsFeedback);
@@ -115,8 +111,9 @@ private:
     float itsKp, itsKd, itsKi;   // controller gains:: Kp: position, Kd: derivative, Ki: integral
     TT itsDesiredOutput;
     TT*  itsFeedback;       //pointer since its usually a sensor signal
-    float itsPorportionalError;
-    float itsDerivativeError, itsIntegralError;
+    float itsPorportionalError = 0;
+    float itsDerivativeError = 0;
+    float itsIntegralError = 0;
     float *dt;
     float dt_sec;
 };

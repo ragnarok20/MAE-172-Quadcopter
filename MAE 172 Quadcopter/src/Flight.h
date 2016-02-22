@@ -60,8 +60,8 @@ include "CurieIMU.h"
 #define Flight_cpp
 
 //Easy way to switch between math types of the controller
-typedef int T;
-//typedef float T;
+//typedef int T;
+typedef float T;
 
 // Rigid body Abstract Data Type
 class RigidBody {

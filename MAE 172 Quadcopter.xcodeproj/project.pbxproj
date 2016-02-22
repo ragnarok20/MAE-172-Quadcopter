@@ -401,6 +401,7 @@
 		AA2A160121073351AA0001FC /* gpio.h in Sources */ = {isa = PBXBuildFile; fileRef = AAAA160121073351AA0001FC /* gpio.h */; };
 		D12CA8711C501A7700CBD7B6 /* MAE_172_Quadcopter.ino in Sources */ = {isa = PBXBuildFile; fileRef = D1FCA8711C501A7700CBD7B6 /* MAE_172_Quadcopter.ino */; };
 		D12CA88B1C5020B700CBD7B6 /* LinearControllers.h in Sources */ = {isa = PBXBuildFile; fileRef = D1FCA88B1C5020B700CBD7B6 /* LinearControllers.h */; };
+		D1842BCA1C79954F0067F53D /* HC-SR04.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D1842BC81C79954F0067F53D /* HC-SR04.cpp */; };
 		D1E6E8B01C6943B5009B6C18 /* I2Cdev.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D1063C1D1C56AE17005C3C7D /* I2Cdev.cpp */; };
 		D1E6E8B11C6943C1009B6C18 /* MadgwickAHRS.c in Sources */ = {isa = PBXBuildFile; fileRef = D1063C1F1C56AE17005C3C7D /* MadgwickAHRS.c */; };
 		D1E6E8B21C6943C7009B6C18 /* MPU9250.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D1063C211C56AE17005C3C7D /* MPU9250.cpp */; };
@@ -813,6 +814,8 @@
 		D116DC221C5E9189008E8268 /* Vector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Vector.h; path = src/Vector.h; sourceTree = "<group>"; };
 		D155D9A41C6D034800B0D582 /* MPU6050.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MPU6050.cpp; path = src/Drivers/MPU6050.cpp; sourceTree = "<group>"; };
 		D155D9A51C6D034800B0D582 /* MPU6050.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPU6050.h; path = src/Drivers/MPU6050.h; sourceTree = "<group>"; };
+		D1842BC81C79954F0067F53D /* HC-SR04.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = "HC-SR04.cpp"; path = "src/Drivers/HC-SR04.cpp"; sourceTree = "<group>"; };
+		D1842BC91C79954F0067F53D /* HC-SR04.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "HC-SR04.h"; path = "src/Drivers/HC-SR04.h"; sourceTree = "<group>"; };
 		D1FCA7F21C501A7600CBD7B6 /* Index */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Index; sourceTree = BUILT_PRODUCTS_DIR; };
 		D1FCA7F51C501A7600CBD7B6 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		D1FCA7F71C501A7600CBD7B6 /* Makefile */ = {isa = PBXFileReference; explicitFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
@@ -2083,6 +2086,8 @@
 		D1063C1C1C56ACD1005C3C7D /* Drivers */ = {
 			isa = PBXGroup;
 			children = (
+				D1842BC81C79954F0067F53D /* HC-SR04.cpp */,
+				D1842BC91C79954F0067F53D /* HC-SR04.h */,
 				D1063C1D1C56AE17005C3C7D /* I2Cdev.cpp */,
 				D1063C1E1C56AE17005C3C7D /* I2Cdev.h */,
 				D1063C1F1C56AE17005C3C7D /* MadgwickAHRS.c */,
@@ -2783,6 +2788,7 @@
 				AA2A160121073351AA000179 /* spi.c in Sources */,
 				AA2A160121073351AA00017A /* spi.h in Sources */,
 				AA2A160121073351AA00017C /* usart.c in Sources */,
+				D1842BCA1C79954F0067F53D /* HC-SR04.cpp in Sources */,
 				AA2A160121073351AA00017D /* usart.h in Sources */,
 				AA2A160121073351AA000181 /* ctrl_access.c in Sources */,
 				AA2A160121073351AA000182 /* ctrl_access.h in Sources */,
