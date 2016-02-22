@@ -58,7 +58,9 @@ include "CurieIMU.h"
 #include "../../../LinearControllers.h"
 #include "../../../Vector.h"
 #include "../../../Flight.h"
+#include "../../../Filters.h"
 #include "../../../Drivers/MPU6050.h"
+
 #include "../../../Drivers/HC-SR04.h"
 #include <Wire.h>
 #include <Servo.h>
@@ -78,6 +80,9 @@ void initializeSystem();
 void processIO();
 
 //-----IMU------//
+extern volatile float beta;				// algorithm gain
+extern volatile float q0, q1, q2, q3;	// quaternion of sensor frame relative to auxiliary frame
+
 MPU6050 mpu;
 
 Vector3<int16_t> acc_raw;
@@ -85,6 +90,7 @@ Vector3<int16_t> gyro_raw;
 Vector3<float> Attitude;
 
 bool IMU_online = false;
+
 
 //----Timer-----//
 // variables to figure out cycle rate

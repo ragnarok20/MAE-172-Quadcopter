@@ -35,9 +35,9 @@ QuadCopter::QuadCopter(float* Dt) {
     Roll.setFeedback(&attitude[1]);
     
     //Standard gains
-    yawGains[0] = 1.0; yawGains[1] = 10.0; yawGains[2] = 0;   //P, D, I
-    pitchGains[0] = 1.0; pitchGains[1] = 10.0; pitchGains[2] = 0;   //P, D, I
-    rollGains[0] = 1.0; rollGains[1] = 10.0; rollGains[2] = 0;   //P, D, I
+    yawGains[0] = 1.0; yawGains[1] = 5; yawGains[2] = 10;   //P, D, DD
+    pitchGains[0] = 1.0; pitchGains[1] = 5; pitchGains[2] = 10;   //P, D, DD
+    rollGains[0] = 1.0; rollGains[1] = 5; rollGains[2] = 10;   //P, D, DD
     
     //Standard Mixer Percent
     yawPercent = .2;
@@ -66,9 +66,13 @@ QuadCopter::QuadCopter(float* Dt, T* ESCSignal[4]) {
     Roll.setFeedback(&attitude[1]);
     
     //Standard gains
-    yawGains[0] = 1.0; yawGains[1] = 10.0; yawGains[2] = 0;   //P, D, I
-    pitchGains[0] = 1.0; pitchGains[1] = 10.0; pitchGains[2] = 0;   //P, D, I
-    rollGains[0] = 1.0; rollGains[1] = 10.0; rollGains[2] = 0;   //P, D, I
+    yawGains[0] = 1.0; yawGains[1] = 5; yawGains[2] = 10;   //P, D, DD
+    pitchGains[0] = 1.0; pitchGains[1] = 5; pitchGains[2] = 10;   //P, D, DD
+    rollGains[0] = 1.0; rollGains[1] = 5; rollGains[2] = 10;   //P, D, DD
+    
+    yawGains = yawGains/10;
+    pitchGains = yawGains/10;
+    rollGains = yawGains/10;
     
     yawPercent = .2;
     pitchPercent = .4;

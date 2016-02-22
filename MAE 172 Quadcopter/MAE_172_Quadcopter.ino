@@ -65,8 +65,6 @@ include "CurieIMU.h"
     #include "src/HardwareSpecific/Arduino/Arduino101/gpio.h"
 #endif
 
-#include "src/Flight.h"
-#include "src/Drivers/MadgwickAHRS.h"
 
 
 

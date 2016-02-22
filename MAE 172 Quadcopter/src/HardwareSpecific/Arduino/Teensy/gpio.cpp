@@ -39,7 +39,7 @@ void initializeSystem() {
     if (mpu.testConnection()) {
         IMU_online = true;
         mpu.calibrateGyro();   //DONT move the MPU when Calibrating
-        mpu.setFullScaleGyroRange(MPU6050_GYRO_FS_500);
+        mpu.setFullScaleGyroRange(MPU6050_GYRO_FS_2000);
     }
     
     //AltitudeSonar.calibrate(10);
@@ -86,29 +86,30 @@ void processIO() {
         acc_raw[1] = acc_raw[1]*2.0f/32768.0f;
         acc_raw[2] = acc_raw[2]*2.0f/32768.0f;
         
-        gyro_raw[0] = gyro_raw[0]*500.0f/32768.0f; // 250 deg/s full range for gyroscope
-        gyro_raw[1] = gyro_raw[1]*500.0f/32768.0f;
-        gyro_raw[2] = gyro_raw[2]*500.0f/32768.0f;
-
+        gyro_raw[0] = gyro_raw[0]*2000.0f/32768.0f; // 250 deg/s full range for gyroscope
+        gyro_raw[1] = gyro_raw[1]*2000.0f/32768.0f;
+        gyro_raw[2] = gyro_raw[2]*2000.0f/32768.0f;
+        
         /*
+        
          // this is for IMU madgwick algorithm
          gyro_raw[0] = gyro_raw[0]*PI/180.0f;
          gyro_raw[1] = gyro_raw[1]*PI/180.0f;
          gyro_raw[2] = gyro_raw[2]*PI/180.0f;
          
          //update quanternion
-         MadgwickAHRSupdateIMU( gyro_raw[0], gy, gyro_raw[2], acc_raw[0], acc_raw[1], acc_raw[2]);
+         MadgwickAHRSupdateIMU( gyro_raw[0], gyro_raw[1], gyro_raw[2], acc_raw[0], acc_raw[1], acc_raw[2]);
          
          //calculate euler
          
-         yaw   = atan2(2.0f * (q1 * q2 + q0 * q3), q0 * q0 + q1 * q1 - q2 * q2 - q3 * q3);
-         pitch = -asin(2.0f * (q1 * q3 - q0 * q2));
-         roll  = atan2(2.0f * (q0 * q1 + q2 * q3), q0 * q0 - q1 * q1 - q2 * q2 + q3 * q3);
-         pitch = pitch * 180.0f / PI;
-         yaw   = yaw *180.0f / PI - 13.8; // Declination at Danville, California is 13 degrees 48 minutes and 47 seconds on 2014-04-04
-         roll  = roll * 180.0f / PI;
-
+         Attitude[2]   = atan2(2.0f * (q1 * q2 + q0 * q3), q0 * q0 + q1 * q1 - q2 * q2 - q3 * q3);
+         Attitude[0]  = -asin(2.0f * (q1 * q3 - q0 * q2));
+         Attitude[1]   = atan2(2.0f * (q0 * q1 + q2 * q3), q0 * q0 - q1 * q1 - q2 * q2 + q3 * q3);
+         Attitude[0]  = Attitude[0] * 180.0f / PI;
+         Attitude[2]    = Attitude[2] *180.0f / PI - 13.8; // Declination at Danville, California is 13 degrees 48 minutes and 47 seconds on 2014-04-04
+         Attitude[1]   = Attitude[1] * 180.0f / PI;
          */
+        
         //integrate gyro rate to get angle if IMU algorithm not used
         Attitude[0] += gyro_raw[0]/measured_cycle_rate;   //pitch
         Attitude[1] += gyro_raw[1]/measured_cycle_rate;   //roll
@@ -196,3 +197,6 @@ void processIO() {
     dt = (float)loop_time/1000000;
     measured_cycle_rate = (1000000*(1/(float)loop_time));   //hz
 }
+
+
+

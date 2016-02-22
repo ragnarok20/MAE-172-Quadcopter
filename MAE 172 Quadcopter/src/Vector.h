@@ -153,6 +153,16 @@ public:
         v.elem[2] = elem[2] * a;
         return v;
     }
+    
+    //Scalar divide the vector
+    Vector3<T> operator/(const T& a) {
+        Vector3<T> v; //init's a 0 Vector
+        
+        v.elem[0] = elem[0] / a;
+        v.elem[1] = elem[1] / a;
+        v.elem[2] = elem[2] / a;
+        return v;
+    }
 
 
     //elements

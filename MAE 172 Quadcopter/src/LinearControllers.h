@@ -56,6 +56,67 @@
 #define LinearControllers_cpp
 
 #include "Vector.h"
+
+//------------------------------------------------------------------------------//
+//-----------------------State Feedback Model-----------------------------------//
+//------------------------------------------------------------------------------//
+
+template <class T>
+class StateFeedback {
+public:
+    //--------constructors and destructor-------------//
+    StateFeedback(){itsKp = 0; itsKd = 0; itsKdd = 0;}
+    StateFeedback(unsigned long* differentialTime){itsKp = 0; itsKd = 0; itsKdd = 0; dt = differentialTime;}
+    StateFeedback(unsigned long* differentialTime, Vector3<float> gains) {
+        //constructor overload. set private vars
+        dt = differentialTime;
+        itsKp = gains[0]; itsKd = gains[1]; itsKdd = gains[2];   // controller gains:: Kp: porportional, Kd: derivative, Ki: integral
+    }
+    
+    StateFeedback(unsigned long* differentialTime, Vector3<float> gains, T desiredOutput) {
+        //constructor overload. set private vars
+        dt = differentialTime;
+        itsKp = gains[0]; itsKd = gains[1]; itsKdd = gains[2];   // controller gains:: Kp: porportional, Kd: derivative, Ki: integral
+        itsDesiredOutput = desiredOutput;
+    }
+    StateFeedback(unsigned long* differentialTime, Vector3<float> gains, T desiredOutput, T *feedback) {
+        //constructor overload. set private vars
+        dt = differentialTime;
+        itsKp = gains[0]; itsKd = gains[1]; itsKdd = gains[2];   // controller gains:: Kp: porportional, Kd: derivative, Ki: integral
+        itsDesiredOutput = desiredOutput;
+        itsFeedback = feedback;
+    }
+    ~StateFeedback(){};
+    
+    //------------methods-------------------//
+    void setGains(Vector3<float> gains) {itsKp = gains[0]; itsKd = gains[1]; itsKdd = gains[2];}
+    void setDesiredOuptut(T desiredOutput) { itsDesiredOutput = desiredOutput;}
+    void setFeedback(T* feedback) {itsFeedback = feedback;}
+    void setDifferentialTime(float* Dt) {dt = Dt;}
+    T getControlSignal() { return (T)itsControlSignal;}
+    
+    void update() {
+        
+        // calculate errors
+        itsPorportionalError = itsDesiredOutput - (*itsFeedback);
+        itsDerivativeError = itsPorportionalError/(*dt);
+        itsSecondDerivativeError = itsDerivativeError/(*dt);
+        
+        //put all together
+        itsControlSignal = -itsKp*itsPorportionalError - itsKd*itsDerivativeError - itsKdd*itsSecondDerivativeError;
+    }
+    
+private:
+    float itsControlSignal;
+    float itsKp, itsKd, itsKdd;   // controller gains:: Kp: error, Kd: derivative of error, Kdd: 2nd derivative of error
+    T itsDesiredOutput;
+    T*  itsFeedback;       //pointer since its usually a sensor signal
+    float itsPorportionalError = 0;
+    float itsDerivativeError = 0;
+    float itsSecondDerivativeError = 0;
+    float *dt;
+};
+
 //------------------------------------------------------------------------------//
 //-----------------------General PID controller object--------------------------//
 //------------------------------------------------------------------------------//

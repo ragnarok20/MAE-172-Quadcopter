@@ -48,7 +48,7 @@
 #elif defined(ARDUINO) // Arduino 1.0 and 1.5 specific
 #   include "Arduino.h"
 #elif defined(CurieIMU) // Arduino 101 Gyro
-include "CurieIMU.h"
+#include "CurieIMU.h"
 #else // error
 #   error Platform not defined
 #endif // end IDE
@@ -126,14 +126,14 @@ public:
     
     //public types
     
-    PIDController<T> Yaw;
-    PIDController<T> Pitch;
-    PIDController<T> Roll;
+    StateFeedback<T> Yaw;
+    StateFeedback<T> Pitch;
+    StateFeedback<T> Roll;
     PIDController<T> Altitude;
     
     
 private:
-    //PID gains vector: P, D, I respectively
+    //state feedback vectors kp,kd,kdd respectively
     Vector3<float> yawGains;
     Vector3<float> pitchGains;
     Vector3<float> rollGains;

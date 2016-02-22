@@ -402,12 +402,12 @@
 		D12CA8711C501A7700CBD7B6 /* MAE_172_Quadcopter.ino in Sources */ = {isa = PBXBuildFile; fileRef = D1FCA8711C501A7700CBD7B6 /* MAE_172_Quadcopter.ino */; };
 		D12CA88B1C5020B700CBD7B6 /* LinearControllers.h in Sources */ = {isa = PBXBuildFile; fileRef = D1FCA88B1C5020B700CBD7B6 /* LinearControllers.h */; };
 		D1842BCA1C79954F0067F53D /* HC-SR04.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D1842BC81C79954F0067F53D /* HC-SR04.cpp */; };
+		D1842BCE1C7AC4CD0067F53D /* Filters.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D1842BCC1C7AC4CD0067F53D /* Filters.cpp */; };
 		D1E6E8B01C6943B5009B6C18 /* I2Cdev.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D1063C1D1C56AE17005C3C7D /* I2Cdev.cpp */; };
 		D1E6E8B11C6943C1009B6C18 /* MadgwickAHRS.c in Sources */ = {isa = PBXBuildFile; fileRef = D1063C1F1C56AE17005C3C7D /* MadgwickAHRS.c */; };
 		D1E6E8B21C6943C7009B6C18 /* MPU9250.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D1063C211C56AE17005C3C7D /* MPU9250.cpp */; };
 		D1FCA7F61C501A7600CBD7B6 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D1FCA7F51C501A7600CBD7B6 /* main.cpp */; };
 		D1FCA8961C530C3000CBD7B6 /* Flight.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D1FCA8941C530C3000CBD7B6 /* Flight.cpp */; };
-		D1FCA8991C530C5300CBD7B6 /* Filters.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D1FCA8971C530C5300CBD7B6 /* Filters.cpp */; };
 		D1FCA89F1C5310BC00CBD7B6 /* gpio.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D1FCA89D1C5310BC00CBD7B6 /* gpio.cpp */; };
 		D1FCA8A51C53135700CBD7B6 /* gpio.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D1FCA8A31C53135700CBD7B6 /* gpio.cpp */; };
 /* End PBXBuildFile section */
@@ -816,6 +816,8 @@
 		D155D9A51C6D034800B0D582 /* MPU6050.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPU6050.h; path = src/Drivers/MPU6050.h; sourceTree = "<group>"; };
 		D1842BC81C79954F0067F53D /* HC-SR04.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = "HC-SR04.cpp"; path = "src/Drivers/HC-SR04.cpp"; sourceTree = "<group>"; };
 		D1842BC91C79954F0067F53D /* HC-SR04.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "HC-SR04.h"; path = "src/Drivers/HC-SR04.h"; sourceTree = "<group>"; };
+		D1842BCC1C7AC4CD0067F53D /* Filters.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Filters.cpp; path = src/Filters.cpp; sourceTree = "<group>"; };
+		D1842BCD1C7AC4CD0067F53D /* Filters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Filters.h; path = src/Filters.h; sourceTree = "<group>"; };
 		D1FCA7F21C501A7600CBD7B6 /* Index */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Index; sourceTree = BUILT_PRODUCTS_DIR; };
 		D1FCA7F51C501A7600CBD7B6 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		D1FCA7F71C501A7600CBD7B6 /* Makefile */ = {isa = PBXFileReference; explicitFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
@@ -938,8 +940,6 @@
 		D1FCA88B1C5020B700CBD7B6 /* LinearControllers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LinearControllers.h; path = src/LinearControllers.h; sourceTree = "<group>"; };
 		D1FCA8941C530C3000CBD7B6 /* Flight.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Flight.cpp; path = src/Flight.cpp; sourceTree = "<group>"; };
 		D1FCA8951C530C3000CBD7B6 /* Flight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Flight.h; path = src/Flight.h; sourceTree = "<group>"; };
-		D1FCA8971C530C5300CBD7B6 /* Filters.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Filters.cpp; path = src/Filters.cpp; sourceTree = "<group>"; };
-		D1FCA8981C530C5300CBD7B6 /* Filters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Filters.h; path = src/Filters.h; sourceTree = "<group>"; };
 		D1FCA89D1C5310BC00CBD7B6 /* gpio.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = gpio.cpp; path = src/HardwareSpecific/Arduino/Arduino101/gpio.cpp; sourceTree = "<group>"; };
 		D1FCA89E1C5310BC00CBD7B6 /* gpio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = gpio.h; path = src/HardwareSpecific/Arduino/Arduino101/gpio.h; sourceTree = "<group>"; };
 		D1FCA8A31C53135700CBD7B6 /* gpio.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = gpio.cpp; path = src/HardwareSpecific/Arduino/Teensy/gpio.cpp; sourceTree = "<group>"; };
@@ -2284,8 +2284,8 @@
 				D116DC221C5E9189008E8268 /* Vector.h */,
 				D1FCA8941C530C3000CBD7B6 /* Flight.cpp */,
 				D1FCA8951C530C3000CBD7B6 /* Flight.h */,
-				D1FCA8971C530C5300CBD7B6 /* Filters.cpp */,
-				D1FCA8981C530C5300CBD7B6 /* Filters.h */,
+				D1842BCC1C7AC4CD0067F53D /* Filters.cpp */,
+				D1842BCD1C7AC4CD0067F53D /* Filters.h */,
 			);
 			name = src;
 			sourceTree = "<group>";
@@ -2475,6 +2475,7 @@
 				D1FCA7F61C501A7600CBD7B6 /* main.cpp in Sources */,
 				D12CA8711C501A7700CBD7B6 /* MAE_172_Quadcopter.ino in Sources */,
 				D12CA88B1C5020B700CBD7B6 /* LinearControllers.h in Sources */,
+				D1842BCE1C7AC4CD0067F53D /* Filters.cpp in Sources */,
 				AA2A160121073351AA000006 /* Bridge.cpp in Sources */,
 				AA2A160121073351AA000007 /* Bridge.h in Sources */,
 				AA2A160121073351AA000008 /* BridgeClient.cpp in Sources */,
@@ -2695,7 +2696,6 @@
 				AA2A160121073351AA000102 /* ChoreoPreset.cpp in Sources */,
 				AA2A160121073351AA000103 /* ChoreoPreset.h in Sources */,
 				AA2A160121073351AA000104 /* ChoreoPresetFormatter.cpp in Sources */,
-				D1FCA8991C530C5300CBD7B6 /* Filters.cpp in Sources */,
 				AA2A160121073351AA000105 /* ChoreoPresetFormatter.h in Sources */,
 				AA2A160121073351AA000106 /* CoapMessageLayer.cpp in Sources */,
 				AA2A160121073351AA000107 /* CoapMessageLayer.h in Sources */,
