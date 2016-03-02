@@ -49,11 +49,57 @@
 #elif defined(ARDUINO) // Arduino 1.0 and 1.5 specific
 #   include "Arduino.h"
 #elif defined(CurieIMU) // Arduino 101 Gyro
-include "CurieIMU.h"
+#   include "CurieIMU.h"
+#   include "CurieBle.h"
 #else // error
 #   error Platform not defined
 #endif // end IDE
 
+#include "../../../LinearControllers.h"
+#include "../../../Vector.h"
+#include "../../../Flight.h"
+#include "../../../Filters.h"
+#include "../../../Drivers/MPU6050.h"
 
+#include "../../../Drivers/HC-SR04.h"
+#include <Wire.h>
+#include <Servo.h>
+
+#define ECHO
+#define sampleFreq 200.0f
+#define sampleFreqSonar 50.f
+#define delayTime ((1/sampleFreq)*1000000.0f)
+
+#define signed_32bits 2147483648
+#define signed_16bits 32767
+
+void initializeSystem();
+void processIO();
+
+extern volatile float beta;
+extern volatile float q0, q1, q2, q3;
+
+vector3<int16_t> acc_raw;
+vector3<int16_t> gyro_raw;
+vector3<float> Attitude;
+
+bool IMU_online = false;
+
+unsigned long begin_of_loop = 0;
+unsigned long loop_time = 0;
+float dt = (float)loop_time/1000000;
+float measure_cycle_rate = sampleFreq;
+int delay_time = 0;
+
+const int motor_LED_test[4] = {3,5,6,9} //these pinouts output PWM on the 101 board
+Servo motor[4];
+short mapped_signal[4];
+
+float *signals[4];
+QuadCopter alpha(&dt, signals);
+
+DistanceSensor AltitudeSonar(2,1,300);
+Vector3<float> Position;
+unsigned long sonarTimer = 0;
 
 #endif
