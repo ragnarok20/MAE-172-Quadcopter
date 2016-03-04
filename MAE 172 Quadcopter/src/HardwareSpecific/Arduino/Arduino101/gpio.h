@@ -91,7 +91,7 @@ float dt = (float)loop_time/1000000;
 float measure_cycle_rate = sampleFreq;
 int delay_time = 0;
 
-const int motor_LED_test[4] = {3,5,6,9} //these pinouts output PWM on the 101 board
+const int motor_LED_test[4] = {3,5,6,9} //these pinouts are the only PWM outputs on the 101 board
 Servo motor[4];
 short mapped_signal[4];
 
