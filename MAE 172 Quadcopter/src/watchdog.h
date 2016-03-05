@@ -29,35 +29,35 @@ class watchdog{
 		watchdog(const unsigned int timerNum = ARC_TIMER_1);
 
 		inline int start(const unsigned	int timerPeriodUsec = 0,
-			void (*userCallBack)() = 0) {
+		void (*userCallBack)() = 0) {
     		return( init((timerPeriodUsec * HZ_USEC), userCallBack) ); 
    		}
 
-    	//restart the timer from 0
-    	int restart(const unsigned int timerPeriodUsec) { return start(timerPeriodUsec); }
+    		//restart the timer from 0
+    		int restart(const unsigned int timerPeriodUsec) { return start(timerPeriodUsec); }
 
 		// Attach or detach the user call back routine.
-    	void attachInterrupt(void (*userCallBack)());
-   		 void detachInterrupt(void) { return attachInterrupt(0); };
+    		void attachInterrupt(void (*userCallBack)());
+   		void detachInterrupt(void) { return attachInterrupt(0); };
 
-    	// Timer interrupt count
-    	inline unsigned int readTickCount(void) { return tickCnt; }
-    	// Read and reset timer interrupt count.
-    	unsigned int rdRstTickCount(void);
+    		// Timer interrupt count
+    		inline unsigned int readTickCount(void) { return tickCnt; }
+    		// Read and reset timer interrupt count.
+    		unsigned int rdRstTickCount(void);
 
 	private:
 		unsigned int timerCountAddr;
-  	 	unsigned int timerControlAddr;
-    	unsigned int timerLimitAddr;
-    	unsigned int timerIrqNum;
-	    unsigned int tickCnt;	
+  		unsigned int timerControlAddr;
+    		unsigned int timerLimitAddr;
+    		unsigned int timerIrqNum;
+		unsigned int tickCnt;	
 
 		void (*isrFuncPtr)();
-    	void (*userCB)();
-    	void (*pwmCB)();
+    		void (*userCB)();
+    		void (*pwmCB)();
 
-    	// Init:  Kick off a timer by initializing it with a period.
-    	int init(const unsigned int periodHz, void (*userCallBack)());
+    		// Init:  Kick off a timer by initializing it with a period.
+    		int init(const unsigned int periodHz, void (*userCallBack)());
 };
 
 #endif
