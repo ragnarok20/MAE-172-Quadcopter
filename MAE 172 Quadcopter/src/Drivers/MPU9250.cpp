@@ -1693,7 +1693,12 @@ uint8_t MPU9250::getIntEnabled() {
  * @see MPU9250_INTERRUPT_FF_BIT
  **/
 void MPU9250::setIntEnabled(uint8_t enabled) {
-    I2Cdev::writeByte(devAddr, MPU9250_RA_INT_ENABLE, enabled);
+    if (useSPI) {
+        MPU9250::writeSPI(MPU9250_RA_INT_ENABLE, enabled);
+    }
+    else {
+        I2Cdev::writeByte(devAddr, MPU9250_RA_INT_ENABLE, enabled);
+    }
 }
 /** Get Free Fall interrupt enabled status.
  * Will be set 0 for disabled, 1 for enabled.

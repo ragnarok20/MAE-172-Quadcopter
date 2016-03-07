@@ -58,7 +58,6 @@ include "CurieIMU.h"
 #include "../../../LinearControllers.h"
 #include "../../../Vector.h"
 #include "../../../Flight.h"
-#include "../../../Filters.h"
 #include "../../../Drivers/MPU6050.h"
 
 #include "../../../Drivers/HC-SR04.h"

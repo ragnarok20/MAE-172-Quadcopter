@@ -27,19 +27,14 @@ void initializeSystem() {
 #endif
     
     Wire.begin();
-    /*
-    pinMode(motor_LED_test[0],OUTPUT);
-    pinMode(motor_LED_test[1],OUTPUT);
-    pinMode(motor_LED_test[2],OUTPUT);
-    pinMode(motor_LED_test[3],OUTPUT);
-    */
-    
     
     mpu.initialize();
     if (mpu.testConnection()) {
         IMU_online = true;
         mpu.calibrateGyro();   //DONT move the MPU when Calibrating
         mpu.setFullScaleGyroRange(MPU6050_GYRO_FS_2000);
+        mpu.setDLPFMode(MPU6050_DLPF_BW_20);
+        mpu.setRate(9);     //100hz samples
     }
     
     //AltitudeSonar.calibrate(10);
@@ -86,7 +81,7 @@ void processIO() {
         acc_raw[1] = acc_raw[1]*2.0f/32768.0f;
         acc_raw[2] = acc_raw[2]*2.0f/32768.0f;
         
-        gyro_raw[0] = gyro_raw[0]*2000.0f/32768.0f; // 250 deg/s full range for gyroscope
+        gyro_raw[0] = gyro_raw[0]*2000.0f/32768.0f; // 200 0 deg/s full range for gyroscope
         gyro_raw[1] = gyro_raw[1]*2000.0f/32768.0f;
         gyro_raw[2] = gyro_raw[2]*2000.0f/32768.0f;
         
@@ -145,10 +140,10 @@ void processIO() {
     mapped_signal[2] = map(*signals[2],0,signed_16bits,1000,2000);
     mapped_signal[3] = map(*signals[3],0,signed_16bits,1000,2000);
     
-    mapped_signal[0] = constrain(mapped_signal[0],1080,2000);
-    mapped_signal[1] = constrain(mapped_signal[1],1080,2000);
-    mapped_signal[2] = constrain(mapped_signal[2],1080,2000);
-    mapped_signal[3] = constrain(mapped_signal[3],1080,2000);
+    mapped_signal[0] = constrain(mapped_signal[0],1000,2000);
+    mapped_signal[1] = constrain(mapped_signal[1],1000,2000);
+    mapped_signal[2] = constrain(mapped_signal[2],1000,2000);
+    mapped_signal[3] = constrain(mapped_signal[3],1000,2000);
     
     // Oneshot125 (125-250 microsecond pulses) protocol will be used
     motor[0].writeMicroseconds(mapped_signal[0]);
