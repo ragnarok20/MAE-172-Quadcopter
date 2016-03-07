@@ -119,11 +119,3 @@ void QuadCopter::steadyLevelFlight() {
     this->mixMotors();
     
 }
-
-
-
-
-
-
-
-
