@@ -33,6 +33,8 @@ void initializeSystem(){
         CurieImu.autoCalibrateXAccelOffset(0);
         CurieImu.autoCalibrateYAccelOffset(0);
         CurieImu.autoCalibrateZAccelOffset(1);
+        CurieImu.getGyroDLPFMode(BMI160_DLPF_MODE_NORM);
+        CurieImu.getAccelDLPFMode(BMI160_DLPF_MODE_NORM);
         CurieImu.setFullScaleGyroRange(BMI160_GYRO_RANGE_2000);
         CurieImu.setFullScaleAccelRange(BMI160_ACCEL_RANGE_2G);  
     }
