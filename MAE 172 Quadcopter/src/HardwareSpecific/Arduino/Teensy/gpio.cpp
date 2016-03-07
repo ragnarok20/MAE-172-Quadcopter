@@ -197,6 +197,3 @@ void processIO() {
     dt = (float)loop_time/1000000;
     measured_cycle_rate = (1000000*(1/(float)loop_time));   //hz
 }
-
-
-
