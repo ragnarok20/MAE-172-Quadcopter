@@ -66,16 +66,11 @@ public:
 
 private:
     float itsMaxDistanceTime = 11764;   //in microseconds = 200cm
-    //float itsMinDistanceTime = 177;     //in microseconds = 300cm
     float itsResponseTime;        //microseconds
     float itsDistance;
     
     float speed_of_sound = 344;     //m/s
-    
-    //calibrating purposes
-    float read_length;
-    float error;
-    float gain;
+    float read_length;   
     
     unsigned short ITS_TRIGGER;
     unsigned short ITS_ECHO;

@@ -18,6 +18,7 @@
 /// @see		ReadMe.txt for references
 ///
 
+#ifdef __TEENSY__
 #ifndef __gpio_h__
 #define __gpio_h__
 
@@ -59,16 +60,21 @@
 #include "../../../Vector.h"
 #include "../../../Flight.h"
 #include "../../../Drivers/MPU6050.h"
+#include "../../../Drivers/SparkFunMPL3115A2.h"
 
 #include "../../../Drivers/HC-SR04.h"
 #include <Wire.h>
 #include <Servo.h>
+#include <NewPing.h>
 
 
 //-----defines-----//
 #define ECHO
+//#define oneshot125
+
 #define sampleFreq 200.0f		// sample frequency in Hz
-#define sampleFreqSonar 50.0f   // sample frequency of sonar in hz
+#define SAMPLE_RATE_DIV (1000/sampleFreq) - 1   // to set our gyro sample rate
+#define sampleFreqSonar 5.0f   // sample frequency of sonar in hz
 #define delayTime ((1/sampleFreq)*1000000.0f)		// sample frequency in Hz
 
 #define signed_32bits 2147483648
@@ -103,20 +109,26 @@ int delay_time = 0;
 const int motor_LED_test[4] = {5,4,3,6};
 Servo motor[4];
 short mapped_signal[4];
+int cal_pot = 0;
 
 // ----- Quad -------//
 float *signals[4];
 QuadCopter alpha(&dt, signals);
 
 //----- Sonar -------//
-DistanceSensor AltitudeSonar(2,1,300);
+DistanceSensor AltitudeSonar(10,9,200);
+//NewPing sonar(10,9,200);
 Vector3<float> Position;
 unsigned long sonarTimer = 0;
 
+//------ altimeter -------//
+//Barometer altimeter;
+//MPL3115A2 altimeter;
+//NewPing sonar(10,9);
+
 
 #endif
-
-
+#endif
 
 
 

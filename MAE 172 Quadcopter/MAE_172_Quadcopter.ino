@@ -46,7 +46,7 @@
 #elif defined(ARDUINO) // Arduino 1.0 and 1.5 specific
 #   include "Arduino.h"
 #elif defined(CurieIMU) // Arduino 101 Gyro
-#include "CurieIMU.h"
+    #include "CurieIMU.h"
 #else // error
 #   error Platform not defined
 #endif // end IDE
@@ -61,8 +61,9 @@
 #ifdef __TEENSY__
     #include "src/HardwareSpecific/Arduino/Teensy/gpio.h"
     #include "src/HardwareSpecific/Arduino/Teensy/gpio.cpp"
-#elif __ARDUINO101__
-    #include "src/HardwareSpecific/Arduino/Arduino101/gpio.h"
+#elif defined(__ARDUINO101__)
+    #include "src/HardwareSpecific/Arduino/Arduino101/gpio_101.h"
+    #include "src/HardwareSpecific/Arduino/Arduino101/gpio_101.cpp"
 #endif
 
 

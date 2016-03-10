@@ -119,10 +119,14 @@ public:
     
     //methods
     void mixMotors();   //mix the control signals and map to the esc signal outputs
+    
+    // Quad States
+    void arm();
     void steadyLevelFlight();
     void ascend(T altitude);
     void descend(T altitude);
     void land();
+    
     
     //public types
     

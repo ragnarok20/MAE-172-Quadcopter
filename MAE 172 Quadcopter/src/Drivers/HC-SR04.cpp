@@ -34,7 +34,7 @@ DistanceSensor::DistanceSensor(const unsigned short TRIGGER, const unsigned shor
     ITS_ECHO = ECHO;
     
     //set object values
-    //itsMaxDistanceTime = (max_distance/speed_of_sound) * 1000000 ;      //microseconds
+    itsMaxDistanceTime = (float)(max_distance/speed_of_sound) * 10000 ;      //microseconds
     
 }
 
@@ -42,7 +42,7 @@ float DistanceSensor::read() {
     // ------ send out a pulse from trigger pin, time how long it takes for echo pin to report back -----//
     //make sure to delay about 50 microseconds before call to this method
     
-    itsResponseTime = -1;
+    itsResponseTime = 0;
     
     // turn pulse on
     // check if the echo pin is sensing a ping first
@@ -60,9 +60,10 @@ float DistanceSensor::read() {
         itsResponseTime = pulseIn(ITS_ECHO, HIGH, itsMaxDistanceTime);
     }
     
-    if (itsResponseTime != -1) {
+    if (itsResponseTime) {
         itsDistance = (((itsResponseTime/10000.0) * speed_of_sound)/2.00000);    //in cm, gain comes from the calibration procedure
     }
+    //zero if error out
     else {
         itsDistance = 0;
     }

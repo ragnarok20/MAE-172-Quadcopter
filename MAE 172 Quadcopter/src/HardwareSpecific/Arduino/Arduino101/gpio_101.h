@@ -18,6 +18,8 @@
 /// @see		ReadMe.txt for references
 ///
 
+#ifndef __gpio_101_h__
+#define __gpio_101_h__
 #ifdef __ARDUINO101__
 
 // Core library for code-sense - IDE-based
@@ -58,7 +60,6 @@
 #include "../../../LinearControllers.h"
 #include "../../../Vector.h"
 #include "../../../Flight.h"
-#include "../../../Filters.h"
 #include "../../../Drivers/MPU6050.h"
 
 #include "../../../Drivers/HC-SR04.h"
@@ -102,4 +103,5 @@ DistanceSensor AltitudeSonar(2,1,300);
 Vector3<float> Position;
 unsigned long sonarTimer = 0;
 
+#endif
 #endif

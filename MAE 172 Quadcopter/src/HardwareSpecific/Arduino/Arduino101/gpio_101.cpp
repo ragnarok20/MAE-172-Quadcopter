@@ -17,7 +17,7 @@
 //
 
 #ifdef __ARDUINO101__
-#include "gpio.h"
+#include "gpio_101.h"
 
 void initializeSystem(){
 #ifdef ECHO 
@@ -135,4 +135,5 @@ void processIO(){
     dt = (float)loop_time/1000000;
     measured_cycle_rate = (1000000*(1/(float)loop_time));   //hz
 }
+
 #endif

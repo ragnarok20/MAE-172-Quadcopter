@@ -16,6 +16,8 @@
 // See 			gpio.h and ReadMe.txt for references
 //
 // Library header
+
+#ifdef __TEENSY__
 #include "gpio.h"
 
 // Code
@@ -27,6 +29,7 @@ void initializeSystem() {
 #endif
     
     Wire.begin();
+    pinMode(A0, INPUT);
     
     mpu.initialize();
     if (mpu.testConnection()) {
@@ -38,6 +41,8 @@ void initializeSystem() {
     }
     
     //AltitudeSonar.calibrate(10);
+    //altimeter.begin();
+    //altimeter.calibrate(0);   //100 ft
     
     // Set up motor signal wires with the servo library
     motor[0].attach(motor_LED_test[0]);
@@ -46,10 +51,10 @@ void initializeSystem() {
     motor[3].attach(motor_LED_test[3]);
     
     // Oneshot125 (125-250 microsecond pulses) protocol will be used. will arm on initialization
-    motor[0].writeMicroseconds(1000);
-    motor[1].writeMicroseconds(1000);
-    motor[2].writeMicroseconds(1000);
-    motor[3].writeMicroseconds(1000);
+   // motor[0].writeMicroseconds(119);
+    //motor[1].writeMicroseconds(119);
+    //motor[2].writeMicroseconds(119);
+    //motor[3].writeMicroseconds(119);
     
 #ifdef ECHO
     if (IMU_online) {
@@ -69,7 +74,11 @@ void processIO() {
     if ((micros() - sonarTimer) > (1/sampleFreqSonar)*1000000 ) {
         Position[2] =  AltitudeSonar.read();
         sonarTimer = micros();
+        //Position[2] =  sonar.ping_cm();
     }
+    
+    //altimeter
+   // Position[2] = altimeter.readAltitude();
     
     //------ Get Attitude ---------//
     if(IMU_online) {
@@ -135,7 +144,23 @@ void processIO() {
     analogWrite(motor_LED_test[3], mapped_signal[3]);
     */
     
-    mapped_signal[0] = map(*signals[0],0,signed_16bits,1000,2000);
+#ifdef oneshot125
+    
+    // Oneshot125 (125-250 microsecond pulses) protocol will be used
+    // mapping the signal ouptuts to microseconds
+    mapped_signal[0] = map(*signals[0],0,signed_16bits,125,250);
+    mapped_signal[1] = map(*signals[1],0,signed_16bits,125,250);
+    mapped_signal[2] = map(*signals[2],0,signed_16bits,125,250);
+    mapped_signal[3] = map(*signals[3],0,signed_16bits,125,250);
+    
+    mapped_signal[0] = constrain(mapped_signal[0],125,250);
+    mapped_signal[1] = constrain(mapped_signal[1],125,250);
+    mapped_signal[2] = constrain(mapped_signal[2],125,250);
+    mapped_signal[3] = constrain(mapped_signal[3],125,250);
+#endif
+    
+    // mapping the signal ouptuts to microseconds
+  /*  mapped_signal[0] = map(*signals[0],0,signed_16bits,1000,2000);
     mapped_signal[1] = map(*signals[1],0,signed_16bits,1000,2000);
     mapped_signal[2] = map(*signals[2],0,signed_16bits,1000,2000);
     mapped_signal[3] = map(*signals[3],0,signed_16bits,1000,2000);
@@ -145,12 +170,23 @@ void processIO() {
     mapped_signal[2] = constrain(mapped_signal[2],1000,2000);
     mapped_signal[3] = constrain(mapped_signal[3],1000,2000);
     
-    // Oneshot125 (125-250 microsecond pulses) protocol will be used
     motor[0].writeMicroseconds(mapped_signal[0]);
     motor[1].writeMicroseconds(mapped_signal[1]);
     motor[2].writeMicroseconds(mapped_signal[2]);
     motor[3].writeMicroseconds(mapped_signal[3]);
+    */
     
+    cal_pot = analogRead(A0);
+    
+    mapped_signal[0] = map(cal_pot,0,1024,1000,2000);
+    mapped_signal[1] = map(cal_pot,0,1024,1000,2000);
+    mapped_signal[2] = map(cal_pot,0,1024,1000,2000);
+    mapped_signal[3] = map(cal_pot,0,1024,1000,2000);
+    
+    motor[0].writeMicroseconds(mapped_signal[0]);
+    motor[1].writeMicroseconds(mapped_signal[1]);
+    motor[2].writeMicroseconds(mapped_signal[2]);
+    motor[3].writeMicroseconds(mapped_signal[3]);
     
     
     //------ Echo to Screen if Defined ----------//
@@ -192,3 +228,5 @@ void processIO() {
     dt = (float)loop_time/1000000;
     measured_cycle_rate = (1000000*(1/(float)loop_time));   //hz
 }
+
+#endif
