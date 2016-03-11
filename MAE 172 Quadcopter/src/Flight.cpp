@@ -74,9 +74,9 @@ QuadCopter::QuadCopter(float* Dt, T* ESCSignal[4]) {
     pitchGains = yawGains/10;
     rollGains = yawGains/10;
     
-    yawPercent = .2;
-    pitchPercent = .4;
-    rollPercent = .4;
+    yawPercent = .1;
+    pitchPercent = .45;
+    rollPercent = .45;
 
     Yaw.setGains(yawGains);
     Pitch.setGains(pitchGains);
@@ -112,8 +112,8 @@ void QuadCopter::steadyLevelFlight() {
     Pitch.setDesiredOuptut(0);
     Roll.setDesiredOuptut(0);
     
-    Yaw.update();
-    Pitch.update();
+    //Yaw.update();
+    //Pitch.update();
     Roll.update();
     
     this->mixMotors();

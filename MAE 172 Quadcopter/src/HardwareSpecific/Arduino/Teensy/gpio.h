@@ -18,7 +18,7 @@
 /// @see		ReadMe.txt for references
 ///
 
-#ifdef __TEENSY__
+//#ifdef __TEENSY__
 #ifndef __gpio_h__
 #define __gpio_h__
 
@@ -57,10 +57,10 @@
 #endif // end IDE
 
 #include "../../../LinearControllers.h"
+#include "../../../Filters.h"
 #include "../../../Vector.h"
 #include "../../../Flight.h"
 #include "../../../Drivers/MPU6050.h"
-#include "../../../Drivers/SparkFunMPL3115A2.h"
 
 #include "../../../Drivers/HC-SR04.h"
 #include <Wire.h>
@@ -72,8 +72,8 @@
 #define ECHO
 //#define oneshot125
 
-#define sampleFreq 200.0f		// sample frequency in Hz
-#define SAMPLE_RATE_DIV (1000/sampleFreq) - 1   // to set our gyro sample rate
+#define sampleFreq 400.0f		// sample frequency in Hz
+#define SAMPLE_RATE_DIV (1000/(sampleFreq)) - 1   // to set our gyro sample rate
 #define sampleFreqSonar 5.0f   // sample frequency of sonar in hz
 #define delayTime ((1/sampleFreq)*1000000.0f)		// sample frequency in Hz
 
@@ -84,6 +84,9 @@
 void initializeSystem();
 void processIO();
 
+void MadgwickAHRSupdateIMU(float gx, float gy, float gz, float ax, float ay, float az);
+float invSqrt(float x);
+
 //-----IMU------//
 extern volatile float beta;				// algorithm gain
 extern volatile float q0, q1, q2, q3;	// quaternion of sensor frame relative to auxiliary frame
@@ -92,7 +95,16 @@ MPU6050 mpu;
 
 Vector3<int16_t> acc_raw;
 Vector3<int16_t> gyro_raw;
+
+Vector3<float> acc_raw_float;
+Vector3<float> gyro_raw_float;
+Vector3<float> gyro_filtered;
+Vector3<float> acc_filtered;
 Vector3<float> Attitude;
+Vector3<float> AttitudeFiltered;
+
+Filter GyroLPF(1/sampleFreq, 256.0);
+Filter AccLPF(1/sampleFreq, 256.0);
 
 bool IMU_online = false;
 
@@ -106,7 +118,7 @@ float measured_cycle_rate = sampleFreq;
 int delay_time = 0;
 
 //------Motor pins--------//
-const int motor_LED_test[4] = {5,4,3,6};
+const int motor_LED_test[4] = {3,4,5,6};
 Servo motor[4];
 short mapped_signal[4];
 int cal_pot = 0;
@@ -128,7 +140,7 @@ unsigned long sonarTimer = 0;
 
 
 #endif
-#endif
+//#endif
 
 
 

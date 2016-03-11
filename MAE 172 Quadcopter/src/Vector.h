@@ -118,6 +118,14 @@ public:
         v.elem[2] = (short)elem[2];
         return v;
     }
+    operator Vector3<float>() {
+        //change to integers
+        Vector3<float> v;
+        v.elem[0] = (float)elem[0];
+        v.elem[1] = (float)elem[1];
+        v.elem[2] = (float)elem[2];
+        return v;
+    }
     
     Vector3<T> operator+(const Vector3<T>& a) {
         Vector3<T> v; //init's a 0 Vector

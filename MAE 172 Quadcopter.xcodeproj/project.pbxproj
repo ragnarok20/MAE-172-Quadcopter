@@ -401,9 +401,9 @@
 		AA2A160121073351AA0001FC /* gpio.h in Sources */ = {isa = PBXBuildFile; fileRef = AAAA160121073351AA0001FC /* gpio.h */; };
 		D12CA8711C501A7700CBD7B6 /* MAE_172_Quadcopter.ino in Sources */ = {isa = PBXBuildFile; fileRef = D1FCA8711C501A7700CBD7B6 /* MAE_172_Quadcopter.ino */; };
 		D12CA88B1C5020B700CBD7B6 /* LinearControllers.h in Sources */ = {isa = PBXBuildFile; fileRef = D1FCA88B1C5020B700CBD7B6 /* LinearControllers.h */; };
+		D1624BB31C920DD400E9423C /* Filters.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D1624BB11C920DD400E9423C /* Filters.cpp */; };
 		D1842BCA1C79954F0067F53D /* HC-SR04.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D1842BC81C79954F0067F53D /* HC-SR04.cpp */; };
 		D1E6E8B01C6943B5009B6C18 /* I2Cdev.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D1063C1D1C56AE17005C3C7D /* I2Cdev.cpp */; };
-		D1E6E8B11C6943C1009B6C18 /* MadgwickAHRS.c in Sources */ = {isa = PBXBuildFile; fileRef = D1063C1F1C56AE17005C3C7D /* MadgwickAHRS.c */; };
 		D1E6E8B21C6943C7009B6C18 /* MPU9250.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D1063C211C56AE17005C3C7D /* MPU9250.cpp */; };
 		D1FCA7F61C501A7600CBD7B6 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D1FCA7F51C501A7600CBD7B6 /* main.cpp */; };
 		D1FCA8961C530C3000CBD7B6 /* Flight.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D1FCA8941C530C3000CBD7B6 /* Flight.cpp */; };
@@ -806,13 +806,13 @@
 		AAAA160121073351AA0001FC /* gpio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gpio.h; sourceTree = "<group>"; };
 		D1063C1D1C56AE17005C3C7D /* I2Cdev.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = I2Cdev.cpp; path = src/Drivers/I2Cdev.cpp; sourceTree = "<group>"; };
 		D1063C1E1C56AE17005C3C7D /* I2Cdev.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = I2Cdev.h; path = src/Drivers/I2Cdev.h; sourceTree = "<group>"; };
-		D1063C1F1C56AE17005C3C7D /* MadgwickAHRS.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = MadgwickAHRS.c; path = src/Drivers/MadgwickAHRS.c; sourceTree = "<group>"; };
-		D1063C201C56AE17005C3C7D /* MadgwickAHRS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MadgwickAHRS.h; path = src/Drivers/MadgwickAHRS.h; sourceTree = "<group>"; };
 		D1063C211C56AE17005C3C7D /* MPU9250.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MPU9250.cpp; path = src/Drivers/MPU9250.cpp; sourceTree = "<group>"; };
 		D1063C221C56AE17005C3C7D /* MPU9250.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPU9250.h; path = src/Drivers/MPU9250.h; sourceTree = "<group>"; };
 		D116DC221C5E9189008E8268 /* Vector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Vector.h; path = src/Vector.h; sourceTree = "<group>"; };
 		D155D9A41C6D034800B0D582 /* MPU6050.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MPU6050.cpp; path = src/Drivers/MPU6050.cpp; sourceTree = "<group>"; };
 		D155D9A51C6D034800B0D582 /* MPU6050.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPU6050.h; path = src/Drivers/MPU6050.h; sourceTree = "<group>"; };
+		D1624BB11C920DD400E9423C /* Filters.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Filters.cpp; path = src/Filters.cpp; sourceTree = "<group>"; };
+		D1624BB21C920DD400E9423C /* Filters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Filters.h; path = src/Filters.h; sourceTree = "<group>"; };
 		D170A6661C90EE41000DC4E5 /* Servo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Servo.h; path = "MAE 172 Quadcopter/src/Drivers/Servo.h"; sourceTree = SOURCE_ROOT; };
 		D1842BC81C79954F0067F53D /* HC-SR04.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = "HC-SR04.cpp"; path = "src/Drivers/HC-SR04.cpp"; sourceTree = "<group>"; };
 		D1842BC91C79954F0067F53D /* HC-SR04.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "HC-SR04.h"; path = "src/Drivers/HC-SR04.h"; sourceTree = "<group>"; };
@@ -2089,8 +2089,6 @@
 				D1842BC91C79954F0067F53D /* HC-SR04.h */,
 				D1063C1D1C56AE17005C3C7D /* I2Cdev.cpp */,
 				D1063C1E1C56AE17005C3C7D /* I2Cdev.h */,
-				D1063C1F1C56AE17005C3C7D /* MadgwickAHRS.c */,
-				D1063C201C56AE17005C3C7D /* MadgwickAHRS.h */,
 				D1063C211C56AE17005C3C7D /* MPU9250.cpp */,
 				D1063C221C56AE17005C3C7D /* MPU9250.h */,
 				D155D9A41C6D034800B0D582 /* MPU6050.cpp */,
@@ -2283,6 +2281,8 @@
 				D116DC221C5E9189008E8268 /* Vector.h */,
 				D1FCA8941C530C3000CBD7B6 /* Flight.cpp */,
 				D1FCA8951C530C3000CBD7B6 /* Flight.h */,
+				D1624BB11C920DD400E9423C /* Filters.cpp */,
+				D1624BB21C920DD400E9423C /* Filters.h */,
 			);
 			name = src;
 			sourceTree = "<group>";
@@ -2533,7 +2533,6 @@
 				AA2A160121073351AA00004D /* GSM3MobileDataNetworkProvider.h in Sources */,
 				AA2A160121073351AA00004E /* GSM3MobileMockupProvider.cpp in Sources */,
 				AA2A160121073351AA00004F /* GSM3MobileMockupProvider.h in Sources */,
-				D1E6E8B11C6943C1009B6C18 /* MadgwickAHRS.c in Sources */,
 				AA2A160121073351AA000050 /* GSM3MobileNetworkProvider.cpp in Sources */,
 				AA2A160121073351AA000051 /* GSM3MobileNetworkProvider.h in Sources */,
 				AA2A160121073351AA000052 /* GSM3MobileNetworkRegistry.cpp in Sources */,
@@ -2707,6 +2706,7 @@
 				AA2A160121073351AA000111 /* MQTTConnectClient.c in Sources */,
 				AA2A160121073351AA000112 /* MQTTConnectServer.c in Sources */,
 				AA2A160121073351AA000113 /* MQTTDeserializePublish.c in Sources */,
+				D1624BB31C920DD400E9423C /* Filters.cpp in Sources */,
 				AA2A160121073351AA000114 /* MQTTFormat.c in Sources */,
 				AA2A160121073351AA000115 /* MQTTFormat.h in Sources */,
 				AA2A160121073351AA000116 /* MQTTLogging.h in Sources */,
