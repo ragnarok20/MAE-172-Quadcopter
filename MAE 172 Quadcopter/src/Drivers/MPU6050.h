@@ -414,6 +414,7 @@ class MPU6050 {
     
         //calculate gyro offsets
         void calibrateGyro();
+        void calibrateGyroYaw();
     
         bool testConnection();
 

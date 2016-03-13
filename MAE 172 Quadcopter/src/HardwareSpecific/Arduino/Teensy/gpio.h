@@ -72,7 +72,7 @@
 #define ECHO
 //#define oneshot125
 
-#define sampleFreq 400.0f		// sample frequency in Hz
+#define sampleFreq 470.0f		// sample frequency in Hz
 #define SAMPLE_RATE_DIV (1000/(sampleFreq)) - 1   // to set our gyro sample rate
 #define sampleFreqSonar 5.0f   // sample frequency of sonar in hz
 #define delayTime ((1/sampleFreq)*1000000.0f)		// sample frequency in Hz
@@ -86,6 +86,8 @@ void processIO();
 
 void MadgwickAHRSupdateIMU(float gx, float gy, float gz, float ax, float ay, float az);
 float invSqrt(float x);
+
+//----------- FSM model -------------------//
 
 //-----IMU------//
 extern volatile float beta;				// algorithm gain

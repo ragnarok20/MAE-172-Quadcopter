@@ -49,9 +49,8 @@ void initializeSystem() {
         IMU_online = true;
         
         digitalWrite(13, HIGH);
-        mpu.calibrateGyro();   //DONT move the MPU when Calibrating
+        mpu.calibrateGyroYaw();   //DONT move the MPU when Calibrating
         digitalWrite(13, LOW);
-        mpu.initialize();
         
         mpu.setFullScaleGyroRange(MPU6050_GYRO_FS_250);
         mpu.setDLPFMode(MPU6050_DLPF_BW_256);
@@ -98,7 +97,7 @@ void processIO() {
         //filter
         gyro_filtered = GyroLPF.update(gyro_raw_float);
         acc_filtered = AccLPF.update(acc_raw_float);
-        
+      
         // convert degrees to radians
         gyro_filtered = gyro_filtered * PI/180.0f;
         
@@ -117,7 +116,7 @@ void processIO() {
         //convert back to degrees
         Attitude[0] = Attitude[0] * 180.0f / PI;
         Attitude[1] = Attitude[1] * 180.0f / PI;
-        
+       
         //integrate yaw axis
         Attitude[2] += gyro_raw_float[2]/measured_cycle_rate;   //yaw
         
@@ -130,6 +129,10 @@ void processIO() {
 
     //alpha.setPosition(Position);
     alpha.setAttitude(Attitude);
+    
+    // ------------- FSM model --------------- //
+    
+    
     alpha.steadyLevelFlight();
 
     // ------ ESC Signal Handling ---------//
@@ -151,10 +154,10 @@ void processIO() {
 #endif
     // normal mapping
     
-     mapped_signal[0] = map(*signals[0],0,10*signed_16bits,1000,2000);
-     mapped_signal[1] = map(*signals[1],0,10*signed_16bits,1000,2000);
-     mapped_signal[2] = map(*signals[2],0,10*signed_16bits,1000,2000);
-     mapped_signal[3] = map(*signals[3],0,10*signed_16bits,1000,2000);
+     mapped_signal[0] = map(*signals[0],0,15*signed_16bits,1000,2000);
+     mapped_signal[1] = map(*signals[1],0,15*signed_16bits,1000,2000);
+     mapped_signal[2] = map(*signals[2],0,15*signed_16bits,1000,2000);
+     mapped_signal[3] = map(*signals[3],0,15*signed_16bits,1000,2000);
      
      mapped_signal[0] = constrain(mapped_signal[0],1000,2000);
      mapped_signal[1] = constrain(mapped_signal[1],1000,2000);

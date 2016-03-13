@@ -115,6 +115,8 @@ void MPU6050::calibrateGyro() {
         I2Cdev::readByte(devAddr,MPU6050_RA_FIFO_COUNTH, &data[0], 2); // read FIFO sample count
         fifo_count = ((uint16_t)data[0] << 8) | data[1];
         packet_count = fifo_count/6;// How many sets of full gyro data for averaging
+        Serial.println(fifo_count);
+        //Serial.println(packet_count);
         
         for (ii = 0; ii < packet_count; ii++) {
             int16_t gyro_temp[3] = {0, 0, 0};
@@ -164,8 +166,30 @@ void MPU6050::calibrateGyro() {
     I2Cdev::writeByte(devAddr,MPU6050_RA_YG_OFFS_USRL, data[3]);
     I2Cdev::writeByte(devAddr,MPU6050_RA_ZG_OFFS_USRH, data[4]);
     I2Cdev::writeByte(devAddr,MPU6050_RA_ZG_OFFS_USRL, data[5]);
+}
+
+void MPU6050::calibrateGyroYaw() {
+    uint16_t bias_calc_cycles = 1000;      //amount of data to average
+    uint8_t data[2]; // data array to hold gyro Z data
+    uint16_t i;
+    int32_t gyro_bias_total = 0;
+
+    for (i = 0; i < bias_calc_cycles; i++) {
+        int16_t gyro_temp = 0;
+        gyro_temp  = MPU6050::getRotationZ();
+        gyro_bias_total += (int32_t) gyro_temp;
+        
+    }
     
+    // the total average
+    gyro_bias_total /= (int32_t)bias_calc_cycles;
     
+    // Construct the gyro biases for push to the hardware gyro bias registers, which are reset to zero upon device startup
+    data[0] = (-gyro_bias_total/4  >> 8) & 0xFF; // Divide by 4 to get 32.9 LSB per deg/s to conform to expected bias input format
+    data[1] = (-gyro_bias_total/4)       & 0xFF; // Biases are additive, so change sign on calculated average gyro biases
+    
+    I2Cdev::writeByte(devAddr,MPU6050_RA_ZG_OFFS_USRH, data[0]);
+    I2Cdev::writeByte(devAddr,MPU6050_RA_ZG_OFFS_USRL, data[1]);
 }
 
 /** Verify the I2C connection.

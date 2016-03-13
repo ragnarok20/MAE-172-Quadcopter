@@ -31,8 +31,8 @@ QuadCopter::QuadCopter(float* Dt) {
     
     //Set the controller feedbacks (actual position)
     Yaw.setFeedback(&attitude[2]);
-    Pitch.setFeedback(&attitude[0]);
-    Roll.setFeedback(&attitude[1]);
+    Pitch.setFeedback(&attitude[1]);
+    Roll.setFeedback(&attitude[0]);
     
     //Standard gains
     yawGains[0] = 1.0; yawGains[1] = 5; yawGains[2] = 10;   //P, D, DD
@@ -62,8 +62,8 @@ QuadCopter::QuadCopter(float* Dt, T* ESCSignal[4]) {
     
     //Set the controller feedbacks (actual position)
     Yaw.setFeedback(&attitude[2]);
-    Pitch.setFeedback(&attitude[0]);
-    Roll.setFeedback(&attitude[1]);
+    Pitch.setFeedback(&attitude[1]);
+    Roll.setFeedback(&attitude[0]);
     
     //Standard gains
     yawGains[0] = 1.0; yawGains[1] = 5; yawGains[2] = 10;   //P, D, DD
@@ -74,9 +74,9 @@ QuadCopter::QuadCopter(float* Dt, T* ESCSignal[4]) {
     pitchGains = yawGains/10;
     rollGains = yawGains/10;
     
-    yawPercent = .1;
-    pitchPercent = .45;
-    rollPercent = .45;
+    yawPercent = .05;
+    pitchPercent = .475;
+    rollPercent = .475;
 
     Yaw.setGains(yawGains);
     Pitch.setGains(pitchGains);
@@ -112,8 +112,8 @@ void QuadCopter::steadyLevelFlight() {
     Pitch.setDesiredOuptut(0);
     Roll.setDesiredOuptut(0);
     
-    //Yaw.update();
-    //Pitch.update();
+    Yaw.update();
+    Pitch.update();
     Roll.update();
     
     this->mixMotors();
