@@ -132,14 +132,17 @@ int cal_pot = 0;
 // ----- Quad -------//
 float *signals[4];
 QuadCopter alpha(&dt, signals);
-QuadcopterStates alphasState;
+QuadcopterStates alphasState = DISARM;
 bool landState = false;     //did we land?
 bool gyroCalibrated = false;    //are we calibrated?
+bool groundDistanceCalibrated = false;    //When quad is landed, will check the sonar distance value for an offset
+float groundSonarDistance = 1;  //in cm
 
 //----- Sonar -------//
 DistanceSensor AltitudeSonar(10,9,200);
 //NewPing sonar(10,9,200);
 Vector3<float> Position;
+float sonarDistance;
 unsigned long sonarTimer = 0;
 
 //------ altimeter -------//

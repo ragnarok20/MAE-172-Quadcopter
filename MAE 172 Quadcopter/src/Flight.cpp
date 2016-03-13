@@ -118,6 +118,9 @@ void QuadCopter::steadyLevelFlight() {
     Pitch.setDesiredOuptut(0);
     Roll.setDesiredOuptut(0);
     
+    // 1 m
+    desiredAltitude = 100;
+    
     Yaw.update();
     Pitch.update();
     Roll.update();

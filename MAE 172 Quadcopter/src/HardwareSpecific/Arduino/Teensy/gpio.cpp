@@ -78,10 +78,17 @@ void processIO() {
     
     //Sonar
     if ((micros() - sonarTimer) > (1/sampleFreqSonar)*1000000 ) {
-        //Position[2] =  AltitudeSonar.read();
+        Position[2] =  AltitudeSonar.read();
         sonarTimer = micros();
+        if (Position[2] == 0) {
+            // 0 read is an error on the sonar or above 2m ceiling
+            //safest option is to kill all motors
+            alphasState == DISARM;
+        }
+
         //Position[2] =  sonar.ping_cm();
     }
+    
     
     //altimeter
    // Position[2] = altimeter.readAltitude();
@@ -127,29 +134,27 @@ void processIO() {
     
     //---- update true Attitude of the quad & Fly----//
 
-    //alpha.setPosition(Position);
+    alpha.setPosition(Position);
     alpha.setAttitude(Attitude);
     
-    // ------------- FSM model --------------- //
+    // ------------- Bluetooth Command Handling --------------- //
     // Disarmed state
     if (BTdataIn == 0x01) {
         alphasState = DISARM;
     }
     //armed state
-    if (BTdataIn == 0x02) {
+    else if (BTdataIn == 0x02) {
         alphasState = ARM;
     }
-    
     // start hovering only iff the quad has been armed
-    if (BTdataIn == 0x03) {
+    else if (BTdataIn == 0x03) {
         if (alphasState == ARM) {
             alphasState = HOVER;
             alpha.steadyLevelFlight();
         }
     }
-    
     // ascend if already hovering
-    if (BTdataIn == 0x04) {
+    else if (BTdataIn == 0x04) {
         if (alphasState == HOVER) {
             alphasState = ASCEND;
             
@@ -160,9 +165,8 @@ void processIO() {
             Position[2] += 10;  //ascend 10 cm
         }
     }
-    
     // descend if already hovering
-    if (BTdataIn == 0x05) {
+    else if (BTdataIn == 0x05) {
         if (alphasState == HOVER) {
             alphasState = DESCEND;
             
@@ -172,22 +176,35 @@ void processIO() {
             }
         }
     }
-    
     // land if already hovering
-    if (BTdataIn == 0x06) {
+    else if (BTdataIn == 0x06) {
         if (alphasState == HOVER) {
             alphasState = LAND;
         }
     }
+    else {
+        //clear if the command in does not make sense
+        BTdataIn == 0x00;
+    }
+    
+    // clear bluetooth data after it has been handled
+    BTdataIn = 0x00;
+    
     
     // -------- Finite state machine functions -------------//
     
     if (alphasState == ARM) {
         
+        //calibrations
         if (!gyroCalibrated) {
             mpu.calibrateGyroYaw();
             gyroCalibrated = true;
         }
+        if (!groundDistanceCalibrated) {
+            groundSonarDistance = AltitudeSonar.read();
+            groundDistanceCalibrated = true;
+        }
+        
         
         // set all motors with a little rotation so we know it is armed
         mapped_signal[0] = 1050;
