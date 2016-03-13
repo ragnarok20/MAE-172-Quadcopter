@@ -2,22 +2,23 @@
 /// @file		gpio.h
 /// @brief		Library header
 /// @details	<#details#>
-/// @n	
+/// @n
 /// @n @b		Project MAE 172 Quadcopter
 /// @n @a		Developed with [embedXcode+](http://embedXcode.weebly.com)
-/// 
+///
 /// @author		Sage Thayer
 /// @author		Sage Thayer
 ///
 /// @date		1/22/16 5:08 PM
 /// @version	<#version#>
-/// 
+///
 /// @copyright	(c) Sage Thayer, 2016
 /// @copyright	<#license#>
 ///
 /// @see		ReadMe.txt for references
 ///
 
+//#ifdef __TEENSY__
 #ifndef __gpio_h__
 #define __gpio_h__
 
@@ -56,28 +57,46 @@
 #endif // end IDE
 
 #include "../../../LinearControllers.h"
+#include "../../../Filters.h"
 #include "../../../Vector.h"
 #include "../../../Flight.h"
-#include "../../../Filters.h"
 #include "../../../Drivers/MPU6050.h"
 
 #include "../../../Drivers/HC-SR04.h"
 #include <Wire.h>
 #include <Servo.h>
+#include <NewPing.h>
+#include "Adafruit_BLE_UART.h"
+
 
 
 //-----defines-----//
 #define ECHO
-#define sampleFreq 200.0f		// sample frequency in Hz
-#define sampleFreqSonar 50.0f   // sample frequency of sonar in hz
+//#define oneshot125
+
+#define sampleFreq 470.0f		// sample frequency in Hz
+#define SAMPLE_RATE_DIV (1000/(sampleFreq)) - 1   // to set our gyro sample rate
+#define sampleFreqSonar 5.0f   // sample frequency of sonar in hz
 #define delayTime ((1/sampleFreq)*1000000.0f)		// sample frequency in Hz
 
 #define signed_32bits 2147483648
 #define signed_16bits 32767
 
+#define ADAFRUITBLE_REQ 10
+#define ADAFRUITBLE_RDY 2
+#define ADAFRUITBLE_RST 9
 //---- prototypes -------//
 void initializeSystem();
 void processIO();
+
+void MadgwickAHRSupdateIMU(float gx, float gy, float gz, float ax, float ay, float az);
+float invSqrt(float x);
+
+//----------- FSM model -------------------//
+typedef enum {ARM,HOVER,ASCEND,DESCEND,LAND,DISARM} QuadcopterStates;
+
+//----------- Bluetooth ------------------//
+char BTdataIn;
 
 //-----IMU------//
 extern volatile float beta;				// algorithm gain
@@ -87,7 +106,16 @@ MPU6050 mpu;
 
 Vector3<int16_t> acc_raw;
 Vector3<int16_t> gyro_raw;
+
+Vector3<float> acc_raw_float;
+Vector3<float> gyro_raw_float;
+Vector3<float> gyro_filtered;
+Vector3<float> acc_filtered;
 Vector3<float> Attitude;
+Vector3<float> AttitudeFiltered;
+
+Filter GyroLPF(1/sampleFreq, 256.0);
+Filter AccLPF(1/sampleFreq, 256.0);
 
 bool IMU_online = false;
 
@@ -101,28 +129,29 @@ float measured_cycle_rate = sampleFreq;
 int delay_time = 0;
 
 //------Motor pins--------//
-const int motor_LED_test[4] = {5,4,3,6};
+const int motor_LED_test[4] = {3,4,5,6};
 Servo motor[4];
 short mapped_signal[4];
+int cal_pot = 0;
 
 // ----- Quad -------//
 float *signals[4];
 QuadCopter alpha(&dt, signals);
+QuadcopterStates alphasState;
+bool landState = false;     //did we land?
+bool gyroCalibrated = false;    //are we calibrated?
 
 //----- Sonar -------//
-DistanceSensor AltitudeSonar(2,1,300);
+DistanceSensor AltitudeSonar(10,9,200);
+//NewPing sonar(10,9,200);
 Vector3<float> Position;
 unsigned long sonarTimer = 0;
 
+//------ altimeter -------//
+//Barometer altimeter;
+//MPL3115A2 altimeter;
+//NewPing sonar(10,9);
+
 
 #endif
-
-
-
-
-
-
-
-
-
-
+//#endif
