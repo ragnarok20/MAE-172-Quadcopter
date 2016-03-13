@@ -402,6 +402,11 @@
 		D12CA8711C501A7700CBD7B6 /* MAE_172_Quadcopter.ino in Sources */ = {isa = PBXBuildFile; fileRef = D1FCA8711C501A7700CBD7B6 /* MAE_172_Quadcopter.ino */; };
 		D12CA88B1C5020B700CBD7B6 /* LinearControllers.h in Sources */ = {isa = PBXBuildFile; fileRef = D1FCA88B1C5020B700CBD7B6 /* LinearControllers.h */; };
 		D1624BB31C920DD400E9423C /* Filters.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D1624BB11C920DD400E9423C /* Filters.cpp */; };
+		D1624BB61C9538F800E9423C /* Adafruit_BLE_UART.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D1624BB41C9538F800E9423C /* Adafruit_BLE_UART.cpp */; };
+		D1624BDD1C95394D00E9423C /* aci_setup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D1624BCF1C95394D00E9423C /* aci_setup.cpp */; };
+		D1624BDE1C95394D00E9423C /* acilib.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D1624BD51C95394D00E9423C /* acilib.cpp */; };
+		D1624BDF1C95394D00E9423C /* hal_aci_tl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D1624BD91C95394D00E9423C /* hal_aci_tl.cpp */; };
+		D1624BE01C95394D00E9423C /* lib_aci.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D1624BDB1C95394D00E9423C /* lib_aci.cpp */; };
 		D1842BCA1C79954F0067F53D /* HC-SR04.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D1842BC81C79954F0067F53D /* HC-SR04.cpp */; };
 		D1E6E8B01C6943B5009B6C18 /* I2Cdev.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D1063C1D1C56AE17005C3C7D /* I2Cdev.cpp */; };
 		D1E6E8B21C6943C7009B6C18 /* MPU9250.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D1063C211C56AE17005C3C7D /* MPU9250.cpp */; };
@@ -813,6 +818,30 @@
 		D155D9A51C6D034800B0D582 /* MPU6050.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPU6050.h; path = src/Drivers/MPU6050.h; sourceTree = "<group>"; };
 		D1624BB11C920DD400E9423C /* Filters.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Filters.cpp; path = src/Filters.cpp; sourceTree = "<group>"; };
 		D1624BB21C920DD400E9423C /* Filters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Filters.h; path = src/Filters.h; sourceTree = "<group>"; };
+		D1624BB41C9538F800E9423C /* Adafruit_BLE_UART.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Adafruit_BLE_UART.cpp; path = src/Drivers/Adafruit_BLE_UART.cpp; sourceTree = "<group>"; };
+		D1624BB51C9538F800E9423C /* Adafruit_BLE_UART.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Adafruit_BLE_UART.h; path = src/Drivers/Adafruit_BLE_UART.h; sourceTree = "<group>"; };
+		D1624BCC1C95394D00E9423C /* aci_cmds.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = aci_cmds.h; path = src/Drivers/utility/aci_cmds.h; sourceTree = "<group>"; };
+		D1624BCD1C95394D00E9423C /* aci_evts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = aci_evts.h; path = src/Drivers/utility/aci_evts.h; sourceTree = "<group>"; };
+		D1624BCE1C95394D00E9423C /* aci_protocol_defines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = aci_protocol_defines.h; path = src/Drivers/utility/aci_protocol_defines.h; sourceTree = "<group>"; };
+		D1624BCF1C95394D00E9423C /* aci_setup.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = aci_setup.cpp; path = src/Drivers/utility/aci_setup.cpp; sourceTree = "<group>"; };
+		D1624BD01C95394D00E9423C /* aci_setup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = aci_setup.h; path = src/Drivers/utility/aci_setup.h; sourceTree = "<group>"; };
+		D1624BD11C95394D00E9423C /* aci.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = aci.h; path = src/Drivers/utility/aci.h; sourceTree = "<group>"; };
+		D1624BD21C95394D00E9423C /* acilib_defs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = acilib_defs.h; path = src/Drivers/utility/acilib_defs.h; sourceTree = "<group>"; };
+		D1624BD31C95394D00E9423C /* acilib_if.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = acilib_if.h; path = src/Drivers/utility/acilib_if.h; sourceTree = "<group>"; };
+		D1624BD41C95394D00E9423C /* acilib_types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = acilib_types.h; path = src/Drivers/utility/acilib_types.h; sourceTree = "<group>"; };
+		D1624BD51C95394D00E9423C /* acilib.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = acilib.cpp; path = src/Drivers/utility/acilib.cpp; sourceTree = "<group>"; };
+		D1624BD61C95394D00E9423C /* acilib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = acilib.h; path = src/Drivers/utility/acilib.h; sourceTree = "<group>"; };
+		D1624BD71C95394D00E9423C /* ble_system.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ble_system.h; path = src/Drivers/utility/ble_system.h; sourceTree = "<group>"; };
+		D1624BD81C95394D00E9423C /* dtm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = dtm.h; path = src/Drivers/utility/dtm.h; sourceTree = "<group>"; };
+		D1624BD91C95394D00E9423C /* hal_aci_tl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = hal_aci_tl.cpp; path = src/Drivers/utility/hal_aci_tl.cpp; sourceTree = "<group>"; };
+		D1624BDA1C95394D00E9423C /* hal_platform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = hal_platform.h; path = src/Drivers/utility/hal_platform.h; sourceTree = "<group>"; };
+		D1624BDB1C95394D00E9423C /* lib_aci.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = lib_aci.cpp; path = src/Drivers/utility/lib_aci.cpp; sourceTree = "<group>"; };
+		D1624BDC1C95394D00E9423C /* lib_aci.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = lib_aci.h; path = src/Drivers/utility/lib_aci.h; sourceTree = "<group>"; };
+		D1624BE11C95396500E9423C /* hal_aci_tl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = hal_aci_tl.h; path = src/Drivers/utility/hal/hal_aci_tl.h; sourceTree = "<group>"; };
+		D1624BE21C95396500E9423C /* hal_io.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = hal_io.h; path = src/Drivers/utility/hal/hal_io.h; sourceTree = "<group>"; };
+		D1624BE31C95397500E9423C /* services.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = services.h; path = src/Drivers/utility/uart/services.h; sourceTree = "<group>"; };
+		D1624BE41C95397500E9423C /* UART_over_BLE.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = UART_over_BLE.xml; path = src/Drivers/utility/uart/UART_over_BLE.xml; sourceTree = "<group>"; };
+		D1624BE51C95397500E9423C /* ublue_setup.gen.out.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = ublue_setup.gen.out.txt; path = src/Drivers/utility/uart/ublue_setup.gen.out.txt; sourceTree = "<group>"; };
 		D170A6661C90EE41000DC4E5 /* Servo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Servo.h; path = "MAE 172 Quadcopter/src/Drivers/Servo.h"; sourceTree = SOURCE_ROOT; };
 		D1842BC81C79954F0067F53D /* HC-SR04.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = "HC-SR04.cpp"; path = "src/Drivers/HC-SR04.cpp"; sourceTree = "<group>"; };
 		D1842BC91C79954F0067F53D /* HC-SR04.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "HC-SR04.h"; path = "src/Drivers/HC-SR04.h"; sourceTree = "<group>"; };
@@ -2085,6 +2114,28 @@
 		D1063C1C1C56ACD1005C3C7D /* Drivers */ = {
 			isa = PBXGroup;
 			children = (
+				D1624BE31C95397500E9423C /* services.h */,
+				D1624BE41C95397500E9423C /* UART_over_BLE.xml */,
+				D1624BE51C95397500E9423C /* ublue_setup.gen.out.txt */,
+				D1624BE11C95396500E9423C /* hal_aci_tl.h */,
+				D1624BE21C95396500E9423C /* hal_io.h */,
+				D1624BCC1C95394D00E9423C /* aci_cmds.h */,
+				D1624BCD1C95394D00E9423C /* aci_evts.h */,
+				D1624BCE1C95394D00E9423C /* aci_protocol_defines.h */,
+				D1624BCF1C95394D00E9423C /* aci_setup.cpp */,
+				D1624BD01C95394D00E9423C /* aci_setup.h */,
+				D1624BD11C95394D00E9423C /* aci.h */,
+				D1624BD21C95394D00E9423C /* acilib_defs.h */,
+				D1624BD31C95394D00E9423C /* acilib_if.h */,
+				D1624BD41C95394D00E9423C /* acilib_types.h */,
+				D1624BD51C95394D00E9423C /* acilib.cpp */,
+				D1624BD61C95394D00E9423C /* acilib.h */,
+				D1624BD71C95394D00E9423C /* ble_system.h */,
+				D1624BD81C95394D00E9423C /* dtm.h */,
+				D1624BD91C95394D00E9423C /* hal_aci_tl.cpp */,
+				D1624BDA1C95394D00E9423C /* hal_platform.h */,
+				D1624BDB1C95394D00E9423C /* lib_aci.cpp */,
+				D1624BDC1C95394D00E9423C /* lib_aci.h */,
 				D1842BC81C79954F0067F53D /* HC-SR04.cpp */,
 				D1842BC91C79954F0067F53D /* HC-SR04.h */,
 				D1063C1D1C56AE17005C3C7D /* I2Cdev.cpp */,
@@ -2093,6 +2144,8 @@
 				D1063C221C56AE17005C3C7D /* MPU9250.h */,
 				D155D9A41C6D034800B0D582 /* MPU6050.cpp */,
 				D155D9A51C6D034800B0D582 /* MPU6050.h */,
+				D1624BB41C9538F800E9423C /* Adafruit_BLE_UART.cpp */,
+				D1624BB51C9538F800E9423C /* Adafruit_BLE_UART.h */,
 			);
 			name = Drivers;
 			sourceTree = "<group>";
@@ -2471,6 +2524,7 @@
 			files = (
 				D1FCA7F61C501A7600CBD7B6 /* main.cpp in Sources */,
 				D12CA8711C501A7700CBD7B6 /* MAE_172_Quadcopter.ino in Sources */,
+				D1624BDE1C95394D00E9423C /* acilib.cpp in Sources */,
 				D12CA88B1C5020B700CBD7B6 /* LinearControllers.h in Sources */,
 				AA2A160121073351AA000006 /* Bridge.cpp in Sources */,
 				AA2A160121073351AA000007 /* Bridge.h in Sources */,
@@ -2495,6 +2549,7 @@
 				AA2A160121073351AA00001C /* Esplora.cpp in Sources */,
 				AA2A160121073351AA00001D /* Esplora.h in Sources */,
 				AA2A160121073351AA000020 /* Dhcp.cpp in Sources */,
+				D1624BE01C95394D00E9423C /* lib_aci.cpp in Sources */,
 				AA2A160121073351AA000021 /* Dhcp.h in Sources */,
 				AA2A160121073351AA000022 /* Dns.cpp in Sources */,
 				AA2A160121073351AA000023 /* Dns.h in Sources */,
@@ -2742,6 +2797,7 @@
 				AA2A160121073351AA000136 /* TFT.h in Sources */,
 				AA2A160121073351AA000138 /* Adafruit_GFX.cpp in Sources */,
 				AA2A160121073351AA000139 /* Adafruit_GFX.h in Sources */,
+				D1624BB61C9538F800E9423C /* Adafruit_BLE_UART.cpp in Sources */,
 				AA2A160121073351AA00013A /* Adafruit_ST7735.cpp in Sources */,
 				AA2A160121073351AA00013B /* Adafruit_ST7735.h in Sources */,
 				AA2A160121073351AA00013C /* glcdfont.c in Sources */,
@@ -2827,12 +2883,14 @@
 				AA2A160121073351AA0001B8 /* conf_ebi.h in Sources */,
 				D1E6E8B21C6943C7009B6C18 /* MPU9250.cpp in Sources */,
 				AA2A160121073351AA0001B9 /* conf_sd_mmc_spi.h in Sources */,
+				D1624BDD1C95394D00E9423C /* aci_setup.cpp in Sources */,
 				AA2A160121073351AA0001BA /* console.c in Sources */,
 				AA2A160121073351AA0001BB /* console.h in Sources */,
 				AA2A160121073351AA0001BC /* debug.h in Sources */,
 				AA2A160121073351AA0001BD /* fw_download.h in Sources */,
 				AA2A160121073351AA0001BE /* fw_download_extflash.c in Sources */,
 				AA2A160121073351AA0001BF /* lwip_setup.c in Sources */,
+				D1624BDF1C95394D00E9423C /* hal_aci_tl.cpp in Sources */,
 				AA2A160121073351AA0001C0 /* lwip_setup.h in Sources */,
 				AA2A160121073351AA0001C1 /* lwipopts.h in Sources */,
 				AA2A160121073351AA0001C2 /* main.c in Sources */,

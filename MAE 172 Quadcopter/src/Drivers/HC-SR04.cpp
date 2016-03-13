@@ -34,7 +34,7 @@ DistanceSensor::DistanceSensor(const unsigned short TRIGGER, const unsigned shor
     ITS_ECHO = ECHO;
     
     //set object values
-    itsMaxDistanceTime = (float)(max_distance/speed_of_sound) * 10000 ;      //microseconds
+    itsMaxDistanceTime = (float)(max_distance/speed_of_sound)* 2 * 10000 ;      //times 2 for round trip and then convert to microseconds
     
 }
 

@@ -28,16 +28,19 @@ QuadCopter::QuadCopter(float* Dt) {
     Yaw.setDifferentialTime(Dt);
     Pitch.setDifferentialTime(Dt);
     Roll.setDifferentialTime(Dt);
+    Altitude.setDifferentialTime(Dt);
     
     //Set the controller feedbacks (actual position)
     Yaw.setFeedback(&attitude[2]);
     Pitch.setFeedback(&attitude[1]);
     Roll.setFeedback(&attitude[0]);
+    Altitude.setFeedback(&position[2]);
     
     //Standard gains
     yawGains[0] = 1.0; yawGains[1] = 5; yawGains[2] = 10;   //P, D, DD
     pitchGains[0] = 1.0; pitchGains[1] = 5; pitchGains[2] = 10;   //P, D, DD
     rollGains[0] = 1.0; rollGains[1] = 5; rollGains[2] = 10;   //P, D, DD
+    altitudeGains[0] = 1; altitudeGains[1] = 10; altitudeGains[2] = 0; // P, D, I: PD controller for altitude
     
     //Standard Mixer Percent
     yawPercent = .2;
@@ -47,6 +50,7 @@ QuadCopter::QuadCopter(float* Dt) {
     Yaw.setGains(yawGains);
     Pitch.setGains(pitchGains);
     Roll.setGains(rollGains);
+    Altitude.setGains(altitudeGains);
     
 }
 
@@ -71,7 +75,7 @@ QuadCopter::QuadCopter(float* Dt, T* ESCSignal[4]) {
     yawGains[0] = 1.0; yawGains[1] = 5; yawGains[2] = 10;   //P, D, DD
     pitchGains[0] = 1.0; pitchGains[1] = 5; pitchGains[2] = 10;   //P, D, DD
     rollGains[0] = 1.0; rollGains[1] = 5; rollGains[2] = 10;   //P, D, DD
-    altitudeGains[0] = 1; altitudeGains[1] = 0; altitudeGains[2] = 10; // P, I, D: PD controller for altitude
+    altitudeGains[0] = 1; altitudeGains[1] = 10; altitudeGains[2] = 0; // P, D, I: PD controller for altitude
     
     yawGains = yawGains/10;
     pitchGains = yawGains/10;
@@ -119,11 +123,12 @@ void QuadCopter::steadyLevelFlight() {
     Roll.setDesiredOuptut(0);
     
     // 1 m
-    desiredAltitude = 100;
+    Altitude.setDesiredOuptut(100);
     
     Yaw.update();
     Pitch.update();
     Roll.update();
+    Altitude.update();
     
     this->mixMotors();
     
@@ -141,6 +146,7 @@ bool QuadCopter::land() {
     Yaw.update();
     Pitch.update();
     Roll.update();
+    Altitude.update();
     
     // Set new height to be zero
     desiredAltitude = 0;

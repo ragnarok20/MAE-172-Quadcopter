@@ -63,6 +63,8 @@
 #include "../../../Drivers/MPU6050.h"
 
 #include "../../../Drivers/HC-SR04.h"
+#include <Adafruit_BLE_UART.h>
+#include <SPI.h>
 #include <Wire.h>
 #include <Servo.h>
 #include <NewPing.h>
@@ -87,8 +89,16 @@ void processIO();
 void MadgwickAHRSupdateIMU(float gx, float gy, float gz, float ax, float ay, float az);
 float invSqrt(float x);
 
+//------------blueooth---------------------//
+#define ADAFRUITBLE_REQ 10
+#define ADAFRUITBLE_RDY 2
+#define ADAFRUITBLE_RST 9
+Adafruit_BLE_UART BTLEserial = Adafruit_BLE_UART(ADAFRUITBLE_REQ, ADAFRUITBLE_RDY, ADAFRUITBLE_RST);
+aci_evt_opcode_t laststatus = ACI_EVT_DISCONNECTED;
+
+
 //----------- FSM model -------------------//
-typedef enum {ARM,HOVER,ASCEND,DESCEND,LAND,DISARM} QuadcopterStates;
+typedef enum {DISARM,ARM,HOVER,ASCEND,DESCEND,LAND} QuadcopterStates;
 
 //----------- Bluetooth ------------------//
 char BTdataIn;
@@ -137,9 +147,12 @@ bool landState = false;     //did we land?
 bool gyroCalibrated = false;    //are we calibrated?
 bool groundDistanceCalibrated = false;    //When quad is landed, will check the sonar distance value for an offset
 float groundSonarDistance = 1;  //in cm
+float newAltitude = 0;
+float altitudeThresh = 3;   //cm
+float altitudeChange = 20;  // change for descend/ascend call in cm
 
 //----- Sonar -------//
-DistanceSensor AltitudeSonar(10,9,200);
+DistanceSensor AltitudeSonar(16,17,200); // trigger, echo, max distance in cm
 //NewPing sonar(10,9,200);
 Vector3<float> Position;
 float sonarDistance;

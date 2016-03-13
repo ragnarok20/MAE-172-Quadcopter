@@ -30,7 +30,9 @@ void initializeSystem() {
     
     Wire.begin();
     pinMode(15, INPUT);
-    pinMode(13, OUTPUT);
+
+    //Bluetooth initialize
+    BTLEserial.begin();
     
     // Set up motor signal wires with the servo library
     motor[0].attach(motor_LED_test[0]);
@@ -47,19 +49,10 @@ void initializeSystem() {
     mpu.initialize();
     if (mpu.testConnection()) {
         IMU_online = true;
-        
-        digitalWrite(13, HIGH);
-        mpu.calibrateGyroYaw();   //DONT move the MPU when Calibrating
-        digitalWrite(13, LOW);
-        
         mpu.setFullScaleGyroRange(MPU6050_GYRO_FS_250);
         mpu.setDLPFMode(MPU6050_DLPF_BW_256);
         mpu.setRate(SAMPLE_RATE_DIV);
     }
-    
-    //AltitudeSonar.calibrate(10);
-    //altimeter.begin();
-    //altimeter.calibrate(0);   //100 ft
     
     
 #ifdef ECHO
@@ -78,7 +71,7 @@ void processIO() {
     
     //Sonar
     if ((micros() - sonarTimer) > (1/sampleFreqSonar)*1000000 ) {
-        Position[2] =  AltitudeSonar.read();
+        Position[2] =  (AltitudeSonar.read() - groundSonarDistance);    //subtract landing gear distance to get a zero on touch down
         sonarTimer = micros();
         if (Position[2] == 0) {
             // 0 read is an error on the sonar or above 2m ceiling
@@ -86,7 +79,6 @@ void processIO() {
             alphasState == DISARM;
         }
 
-        //Position[2] =  sonar.ping_cm();
     }
     
     
@@ -137,50 +129,76 @@ void processIO() {
     alpha.setPosition(Position);
     alpha.setAttitude(Attitude);
     
+    //---------Bluetooth Setup----------//
+    BTLEserial.pollACI();
+    aci_evt_opcode_t status = BTLEserial.getState();
+    if(status == ACI_EVT_CONNECTED){
+        while (BTLEserial.available()) {
+            BTdataIn = BTLEserial.read();
+        }
+
+    }
+    else {
+        BTdataIn = 'l';
+    }
+    
     // ------------- Bluetooth Command Handling --------------- //
     // Disarmed state
-    if (BTdataIn == 0x01) {
+    if (BTdataIn == 'd') {
         alphasState = DISARM;
+        BTdataIn == 0x00;   //reset the command
     }
     //armed state
-    else if (BTdataIn == 0x02) {
+    else if (BTdataIn == 'a' && alphasState != ARM ) {
         alphasState = ARM;
+        gyroCalibrated = false;     //set to false so everytime I move into arm it triggeres a gyro recalibration
+        BTdataIn == 0x00;
     }
-    // start hovering only iff the quad has been armed
-    else if (BTdataIn == 0x03) {
-        if (alphasState == ARM) {
-            alphasState = HOVER;
-            alpha.steadyLevelFlight();
-        }
+    //hover state (hit the same key twice)
+    else if (BTdataIn == 'a' && alphasState == ARM ) {
+        alphasState = HOVER;
+        BTdataIn == 0x00;
     }
+
     // ascend if already hovering
-    else if (BTdataIn == 0x04) {
+    else if (BTdataIn == '+') {
         if (alphasState == HOVER) {
             alphasState = ASCEND;
             
             //only ascend if we are within our snesing distance of the sonar
-            if (Position[2] <= 200) {
-                Position[2] += 10;  //ascend 10 cm
+            if (Position[2] <= 190) {
+                newAltitude = Position[2]+altitudeChange;
+                alpha.Altitude.setDesiredOuptut(newAltitude);  //ascend 10 cm
             }
-            Position[2] += 10;  //ascend 10 cm
+            else {
+                alphasState = HOVER;
+            }
         }
+        BTdataIn == 0x00;
     }
     // descend if already hovering
-    else if (BTdataIn == 0x05) {
+    else if (BTdataIn == '-') {
         if (alphasState == HOVER) {
             alphasState = DESCEND;
             
             //only descend if there is room too
             if (Position[2] >= 11) {
-                Position[2] -= 10;  //descend 10 cm
+                newAltitude = Position[2]-altitudeChange;
+                alpha.Altitude.setDesiredOuptut(newAltitude);  //ascend 10 cm
+            }
+            else {
+                alphasState = HOVER;
             }
         }
+        BTdataIn == 0x00;
     }
+    
     // land if already hovering
-    else if (BTdataIn == 0x06) {
+    else if (BTdataIn == 'l') {
         if (alphasState == HOVER) {
             alphasState = LAND;
         }
+        BTdataIn == 0x00;
     }
     else {
         //clear if the command in does not make sense
@@ -199,6 +217,7 @@ void processIO() {
         if (!gyroCalibrated) {
             mpu.calibrateGyroYaw();
             gyroCalibrated = true;
+            Attitude[2] = 0;    //set yaw to zero
         }
         if (!groundDistanceCalibrated) {
             groundSonarDistance = AltitudeSonar.read();
@@ -226,16 +245,23 @@ void processIO() {
         alpha.steadyLevelFlight();
         
         // mapping the signal ouptuts to microseconds
-        mapped_signal[0] = map(*signals[0],0,15*signed_16bits,1000,2000);
-        mapped_signal[1] = map(*signals[1],0,15*signed_16bits,1000,2000);
-        mapped_signal[2] = map(*signals[2],0,15*signed_16bits,1000,2000);
-        mapped_signal[3] = map(*signals[3],0,15*signed_16bits,1000,2000);
+        mapped_signal[0] = map(*signals[0],0,15*signed_16bits,1050,2000);
+        mapped_signal[1] = map(*signals[1],0,15*signed_16bits,1050,2000);
+        mapped_signal[2] = map(*signals[2],0,15*signed_16bits,1050,2000);
+        mapped_signal[3] = map(*signals[3],0,15*signed_16bits,1050,2000);
         
         //constraining the values
-        mapped_signal[0] = constrain(mapped_signal[0],1000,2000);
-        mapped_signal[1] = constrain(mapped_signal[1],1000,2000);
-        mapped_signal[2] = constrain(mapped_signal[2],1000,2000);
-        mapped_signal[3] = constrain(mapped_signal[3],1000,2000);
+        mapped_signal[0] = constrain(mapped_signal[0],1050,2000);
+        mapped_signal[1] = constrain(mapped_signal[1],1050,2000);
+        mapped_signal[2] = constrain(mapped_signal[2],1050,2000);
+        mapped_signal[3] = constrain(mapped_signal[3],1050,2000);
+    }
+    
+    if (alphasState == ASCEND || alphasState == DESCEND) {
+        //check to see if ascend or descend finished
+        if (abs(Position[2] - newAltitude) >= altitudeThresh) {
+            alphasState = HOVER;
+        }
     }
     
     if (alphasState == LAND) {
@@ -248,16 +274,16 @@ void processIO() {
         }
         
         // mapping the signal ouptuts to microseconds
-        mapped_signal[0] = map(*signals[0],0,15*signed_16bits,1000,2000);
-        mapped_signal[1] = map(*signals[1],0,15*signed_16bits,1000,2000);
-        mapped_signal[2] = map(*signals[2],0,15*signed_16bits,1000,2000);
-        mapped_signal[3] = map(*signals[3],0,15*signed_16bits,1000,2000);
+        mapped_signal[0] = map(*signals[0],0,15*signed_16bits,1050,2000);
+        mapped_signal[1] = map(*signals[1],0,15*signed_16bits,1050,2000);
+        mapped_signal[2] = map(*signals[2],0,15*signed_16bits,1050,2000);
+        mapped_signal[3] = map(*signals[3],0,15*signed_16bits,1050,2000);
         
         //constraining the values
-        mapped_signal[0] = constrain(mapped_signal[0],1000,2000);
-        mapped_signal[1] = constrain(mapped_signal[1],1000,2000);
-        mapped_signal[2] = constrain(mapped_signal[2],1000,2000);
-        mapped_signal[3] = constrain(mapped_signal[3],1000,2000);
+        mapped_signal[0] = constrain(mapped_signal[0],1050,2000);
+        mapped_signal[1] = constrain(mapped_signal[1],1050,2000);
+        mapped_signal[2] = constrain(mapped_signal[2],1050,2000);
+        mapped_signal[3] = constrain(mapped_signal[3],1050,2000);
     }
     
 
@@ -287,7 +313,7 @@ void processIO() {
     //------ Echo to Screen if Defined ----------//
 #ifdef ECHO
     
-    if (IMU_online) {
+    if (1) {
         
         
         Serial.print("yaw: ");
@@ -310,11 +336,14 @@ void processIO() {
         Serial.print("\t Altitude: ");
         Serial.print(Position[2]);
         
+        Serial.print("\t State: ");
+        Serial.print(alphasState);
         
         Serial.print("\t Sample Rate: ");
         Serial.println(measured_cycle_rate);
         
     }
+
 
 #endif
     
