@@ -123,9 +123,9 @@ public:
     // Quad States
     void arm();
     void steadyLevelFlight();
-    void ascend(T altitude);
-    void descend(T altitude);
-    void land();
+    void ascend(T altitude) {desiredAltitude = altitude;};
+    void descend(T altitude) {desiredAltitude = altitude;};
+    bool land();    //returns true if landed withn threshold
     
     
     //public types
@@ -150,6 +150,8 @@ private:
     T desiredPitch = 0;
     T desiredRoll = 0;
     T desiredAltitude = 0;
+    
+    float landThreshold = 2;    //cm
     
     
     T escSignal[4];

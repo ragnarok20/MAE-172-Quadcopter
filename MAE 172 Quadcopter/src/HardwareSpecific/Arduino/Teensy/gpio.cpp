@@ -131,44 +131,127 @@ void processIO() {
     alpha.setAttitude(Attitude);
     
     // ------------- FSM model --------------- //
+    // Disarmed state
+    if (BTdataIn == 0x01) {
+        alphasState = DISARM;
+    }
+    //armed state
+    if (BTdataIn == 0x02) {
+        alphasState = ARM;
+    }
     
+    // start hovering only iff the quad has been armed
+    if (BTdataIn == 0x03) {
+        if (alphasState == ARM) {
+            alphasState = HOVER;
+            alpha.steadyLevelFlight();
+        }
+    }
     
-    alpha.steadyLevelFlight();
+    // ascend if already hovering
+    if (BTdataIn == 0x04) {
+        if (alphasState == HOVER) {
+            alphasState = ASCEND;
+            
+            //only ascend if we are within our snesing distance of the sonar
+            if (Position[2] <= 200) {
+                Position[2] += 10;  //ascend 10 cm
+            }
+            Position[2] += 10;  //ascend 10 cm
+        }
+    }
+    
+    // descend if already hovering
+    if (BTdataIn == 0x05) {
+        if (alphasState == HOVER) {
+            alphasState = DESCEND;
+            
+            //only descend if there is room too
+            if (Position[2] >= 11) {
+                Position[2] -= 10;  //descend 10 cm
+            }
+        }
+    }
+    
+    // land if already hovering
+    if (BTdataIn == 0x06) {
+        if (alphasState == HOVER) {
+            alphasState = LAND;
+        }
+    }
+    
+    // -------- Finite state machine functions -------------//
+    
+    if (alphasState == ARM) {
+        
+        if (!gyroCalibrated) {
+            mpu.calibrateGyroYaw();
+            gyroCalibrated = true;
+        }
+        
+        // set all motors with a little rotation so we know it is armed
+        mapped_signal[0] = 1050;
+        mapped_signal[1] = 1050;
+        mapped_signal[2] = 1050;
+        mapped_signal[3] = 1050;
+
+    }
+    
+    if (alphasState == DISARM) {
+        // set all motors to no rotation
+        mapped_signal[0] = 1000;
+        mapped_signal[1] = 1000;
+        mapped_signal[2] = 1000;
+        mapped_signal[3] = 1000;
+    }
+    
+    if (alphasState == HOVER) {
+        alpha.steadyLevelFlight();
+        
+        // mapping the signal ouptuts to microseconds
+        mapped_signal[0] = map(*signals[0],0,15*signed_16bits,1000,2000);
+        mapped_signal[1] = map(*signals[1],0,15*signed_16bits,1000,2000);
+        mapped_signal[2] = map(*signals[2],0,15*signed_16bits,1000,2000);
+        mapped_signal[3] = map(*signals[3],0,15*signed_16bits,1000,2000);
+        
+        //constraining the values
+        mapped_signal[0] = constrain(mapped_signal[0],1000,2000);
+        mapped_signal[1] = constrain(mapped_signal[1],1000,2000);
+        mapped_signal[2] = constrain(mapped_signal[2],1000,2000);
+        mapped_signal[3] = constrain(mapped_signal[3],1000,2000);
+    }
+    
+    if (alphasState == LAND) {
+        
+        landState = alpha.land();
+        
+        //Disarm if we land
+        if (landState == true) {
+            alphasState = DISARM;
+        }
+        
+        // mapping the signal ouptuts to microseconds
+        mapped_signal[0] = map(*signals[0],0,15*signed_16bits,1000,2000);
+        mapped_signal[1] = map(*signals[1],0,15*signed_16bits,1000,2000);
+        mapped_signal[2] = map(*signals[2],0,15*signed_16bits,1000,2000);
+        mapped_signal[3] = map(*signals[3],0,15*signed_16bits,1000,2000);
+        
+        //constraining the values
+        mapped_signal[0] = constrain(mapped_signal[0],1000,2000);
+        mapped_signal[1] = constrain(mapped_signal[1],1000,2000);
+        mapped_signal[2] = constrain(mapped_signal[2],1000,2000);
+        mapped_signal[3] = constrain(mapped_signal[3],1000,2000);
+    }
+    
 
     // ------ ESC Signal Handling ---------//
-
     
-#ifdef oneshot125
+    //write to motors
+    motor[0].writeMicroseconds(mapped_signal[0]);
+    motor[1].writeMicroseconds(mapped_signal[1]);
+    motor[2].writeMicroseconds(mapped_signal[2]);
+    motor[3].writeMicroseconds(mapped_signal[3]);
     
-    // Oneshot125 (125-250 microsecond pulses) protocol will be used
-    // mapping the signal ouptuts to microseconds
-    mapped_signal[0] = map(*signals[0],0,signed_16bits,125,250);
-    mapped_signal[1] = map(*signals[1],0,signed_16bits,125,250);
-    mapped_signal[2] = map(*signals[2],0,signed_16bits,125,250);
-    mapped_signal[3] = map(*signals[3],0,signed_16bits,125,250);
-    
-    mapped_signal[0] = constrain(mapped_signal[0],125,250);
-    mapped_signal[1] = constrain(mapped_signal[1],125,250);
-    mapped_signal[2] = constrain(mapped_signal[2],125,250);
-    mapped_signal[3] = constrain(mapped_signal[3],125,250);
-#endif
-    // normal mapping
-    
-     mapped_signal[0] = map(*signals[0],0,15*signed_16bits,1000,2000);
-     mapped_signal[1] = map(*signals[1],0,15*signed_16bits,1000,2000);
-     mapped_signal[2] = map(*signals[2],0,15*signed_16bits,1000,2000);
-     mapped_signal[3] = map(*signals[3],0,15*signed_16bits,1000,2000);
-     
-     mapped_signal[0] = constrain(mapped_signal[0],1000,2000);
-     mapped_signal[1] = constrain(mapped_signal[1],1000,2000);
-     mapped_signal[2] = constrain(mapped_signal[2],1000,2000);
-     mapped_signal[3] = constrain(mapped_signal[3],1000,2000);
-     
-     motor[0].writeMicroseconds(mapped_signal[0]);
-     motor[1].writeMicroseconds(mapped_signal[1]);
-     motor[2].writeMicroseconds(mapped_signal[2]);
-     motor[3].writeMicroseconds(mapped_signal[3]);
-     
 
   /*  cal_pot = analogRead(15);
     
@@ -181,6 +264,9 @@ void processIO() {
     motor[1].writeMicroseconds(mapped_signal[1]);
     motor[2].writeMicroseconds(mapped_signal[2]);
     motor[3].writeMicroseconds(mapped_signal[3]);*/
+    
+    
+    
     //------ Echo to Screen if Defined ----------//
 #ifdef ECHO
     

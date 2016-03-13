@@ -54,6 +54,7 @@ QuadCopter::QuadCopter(float* Dt, T* ESCSignal[4]) {
     Yaw.setDifferentialTime(Dt);
     Pitch.setDifferentialTime(Dt);
     Roll.setDifferentialTime(Dt);
+    Altitude.setDifferentialTime(Dt);
     
     ESCSignal[0] = &escSignal[0];
     ESCSignal[1] = &escSignal[1];
@@ -64,23 +65,28 @@ QuadCopter::QuadCopter(float* Dt, T* ESCSignal[4]) {
     Yaw.setFeedback(&attitude[2]);
     Pitch.setFeedback(&attitude[1]);
     Roll.setFeedback(&attitude[0]);
+    Altitude.setFeedback(&position[2]);
     
     //Standard gains
     yawGains[0] = 1.0; yawGains[1] = 5; yawGains[2] = 10;   //P, D, DD
     pitchGains[0] = 1.0; pitchGains[1] = 5; pitchGains[2] = 10;   //P, D, DD
     rollGains[0] = 1.0; rollGains[1] = 5; rollGains[2] = 10;   //P, D, DD
+    altitudeGains[0] = 1; altitudeGains[1] = 0; altitudeGains[2] = 10; // P, I, D: PD controller for altitude
     
     yawGains = yawGains/10;
     pitchGains = yawGains/10;
     rollGains = yawGains/10;
+    altitudeGains = altitudeGains/10;
     
     yawPercent = .05;
     pitchPercent = .475;
     rollPercent = .475;
-
+    
+    //set gains in controller objects
     Yaw.setGains(yawGains);
     Pitch.setGains(pitchGains);
     Roll.setGains(rollGains);
+    Altitude.setGains(altitudeGains);
     
 }
 
@@ -95,16 +101,16 @@ void QuadCopter::mixMotors() {
     escSignal[2] = (yawPercent)*Yaw.getControlSignal()/2 - (rollPercent)*Roll.getControlSignal()/2 + (pitchPercent)*Pitch.getControlSignal()/2;           //motor 3
     escSignal[3] = -(yawPercent)*Yaw.getControlSignal()/2 - (rollPercent)*Roll.getControlSignal()/2 - (pitchPercent)*Pitch.getControlSignal()/2;          //motor 4
     
-   /*
+   
     //append altitude control
     escSignal[0] += Altitude.getControlSignal();            //motor 1
     escSignal[1] += Altitude.getControlSignal();           //motor 2
     escSignal[2] += Altitude.getControlSignal();           //motor 3
     escSignal[3] += Altitude.getControlSignal();          //motor 4
-    */
+    
     
 }
-// method to hold the quad level and at a set hieght 
+// method to hold the quad level and at a set height
 void QuadCopter::steadyLevelFlight() {
     
     //Set the controller desired position
@@ -119,3 +125,37 @@ void QuadCopter::steadyLevelFlight() {
     this->mixMotors();
     
 }
+
+// Lets land
+bool QuadCopter::land() {
+    
+    //Stay level
+    Yaw.setDesiredOuptut(0);
+    Pitch.setDesiredOuptut(0);
+    Roll.setDesiredOuptut(0);
+    
+    //update attitude controllers
+    Yaw.update();
+    Pitch.update();
+    Roll.update();
+    
+    // Set new height to be zero
+    desiredAltitude = 0;
+    
+    this->mixMotors();
+    
+    if (position[2] - desiredAltitude <= landThreshold) {
+        return true;
+    }
+    else {
+        return false;
+    }
+    
+}
+
+
+
+
+
+
+

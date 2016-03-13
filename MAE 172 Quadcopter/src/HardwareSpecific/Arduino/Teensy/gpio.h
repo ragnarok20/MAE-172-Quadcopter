@@ -88,6 +88,10 @@ void MadgwickAHRSupdateIMU(float gx, float gy, float gz, float ax, float ay, flo
 float invSqrt(float x);
 
 //----------- FSM model -------------------//
+typedef enum {ARM,HOVER,ASCEND,DESCEND,LAND,DISARM} QuadcopterStates;
+
+//----------- Bluetooth ------------------//
+char BTdataIn;
 
 //-----IMU------//
 extern volatile float beta;				// algorithm gain
@@ -128,6 +132,9 @@ int cal_pot = 0;
 // ----- Quad -------//
 float *signals[4];
 QuadCopter alpha(&dt, signals);
+QuadcopterStates alphasState;
+bool landState = false;     //did we land?
+bool gyroCalibrated = false;    //are we calibrated?
 
 //----- Sonar -------//
 DistanceSensor AltitudeSonar(10,9,200);
