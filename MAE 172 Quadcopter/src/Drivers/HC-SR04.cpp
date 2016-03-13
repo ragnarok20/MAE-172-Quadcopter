@@ -35,7 +35,7 @@ DistanceSensor::DistanceSensor(const unsigned short TRIGGER, const unsigned shor
     
     //set object values
     itsMaxDistanceTime = (float)(max_distance/speed_of_sound)* 2 * 10000 ;      //times 2 for round trip and then convert to microseconds
-    
+    attachInterrupt(ECHO, timestamp, CHANGING); 
 }
 
 float DistanceSensor::read() {
@@ -87,4 +87,9 @@ void DistanceSensor::calibrate(float cal_length) {
         
         delay(100);
     }
+    
+void unsigned volatile timestamp(){
+    t1 = micros();
+    t2 = micros();
+}
 }

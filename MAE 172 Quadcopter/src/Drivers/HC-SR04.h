@@ -54,6 +54,13 @@
 #ifndef HC_SR04_cpp
 #define HC_SR04_cpp
 
+
+unsigned long t1;
+unsigned long t2;
+
+void unsigned volatile timestamp();
+
+    
 class DistanceSensor {
 public:
     // the TRIGGER pin sends out the pulse while the ECHO pin reports HIGH if pulse is heard
@@ -63,7 +70,7 @@ public:
     //methods
     void calibrate(float cal);
     float read();
-
+    
 private:
     float itsMaxDistanceTime = 11764;   //in microseconds = 200cm
     float itsResponseTime;        //microseconds
@@ -74,7 +81,6 @@ private:
     
     unsigned short ITS_TRIGGER;
     unsigned short ITS_ECHO;
-    
     
 };
 
